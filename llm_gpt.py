@@ -135,10 +135,10 @@ def call_chatgpt(chatgpt_messages, max_tokens=40, model="gpt-35-turbo"):
     #                                          temperature=0.6, max_tokens=max_tokens)
     response = openai.ChatCompletion.create(engine=model, messages=chatgpt_messages,#[chatgpt_messages],
     temperature=0.7,
-  max_tokens=max_tokens,
-#   top_p=0.95,
-#   frequency_penalty=0,
-#   presence_penalty=0,
+    max_tokens=max_tokens,
+      top_p=0.95,
+      frequency_penalty=1.2,
+      presence_penalty=0,
   stop=None)
 
 

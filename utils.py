@@ -1,4 +1,12 @@
 
+'''
+@TranNhiem 2023/06/30 
+include the following functions: 
+1. Processing Image Resize, Crop, Padding Etc.
+2. Dataloader for Cityscape Dataset Return (Image, Segmentation Label) and Image's Name 
+
+'''
+
 
 import os 
 import cv2
@@ -8,25 +16,8 @@ from PIL import Image, ImageDraw, ImageFont
 from torch.utils.data import Dataset, DataLoader
 import json 
 
-def read_image_width_height(image_path):
-    image = Image.open(image_path)
-    width, height = image.size
-    return width, height
 
-
-def resize_long_edge_cv2(image, target_size=384):
-    height, width = image.shape[:2]
-    aspect_ratio = float(width) / float(height)
-
-    if height > width:
-        new_height = target_size
-        new_width = int(target_size * aspect_ratio)
-    else:
-        new_width = target_size
-        new_height = int(target_size / aspect_ratio)
-
-    resized_image = cv2.resize(image, (new_width, new_height), interpolation=cv2.INTER_AREA)
-    return resized_image
+##------------------ Image Processing ------------------## 
 
 def resize_long_edge(image, target_size=384):
     # Calculate the aspect ratio
@@ -46,6 +37,7 @@ def resize_long_edge(image, target_size=384):
     return resized_image
 
 
+##------------------CityScape Dataloader ------------------## 
 
 class CityscapesSegmentation(Dataset):
     '''
@@ -62,10 +54,11 @@ class CityscapesSegmentation(Dataset):
 
     '''
 
-    def __init__(self, root_dir, split, transforms=None, version='gtFine'):
+    def __init__(self, root_dir, split,img_size=256, transforms=None, version='gtFine'):
         self.root_dir = root_dir
         self.split = split
         self.transforms = transforms
+        self.img_size=img_size 
 
         if version=='gtFine':
             self.image_dir = os.path.join(root_dir, 'leftImg8bit', split)
@@ -124,23 +117,24 @@ class CityscapesSegmentation(Dataset):
             start, stop, step = idx.indices(len(self))
             indices = range(start, stop, step)
             images = [self.images[i] for i in indices]
+
             return [self._load_image(i) for i in images]
         else:
             idx=idx#+ 15000 ## Controll Increasment value 
-            return self._load_image(self.images[idx])
+            return self._load_image(self.images[idx]), self.images
             #return self.images[idx]
-
 
     def _load_image(self, image_paths):
         image_path, label_path = image_paths
         image = Image.open(image_path).convert('RGB')
         label = Image.open(label_path)
+        image= resize_long_edge(image, target_size=self.img_size)
+        label= resize_long_edge(label, target_size=self.img_size)
 
         if self.transforms is not None:
             image = self.transforms(image)
-            img_size = image.size
-            label = transforms.Resize((img_size[1], img_size[0]), Image.NEAREST)(label)
-
+         
+    
         return image, label
     
     def read_all_imgs_json(self, json_names_path, condition_img=None, num_imgs=10): 
@@ -176,9 +170,7 @@ class CityscapesSegmentation(Dataset):
             return image_ids, image_names
         
 
-
-def main(): 
-
+def main(args):
 
     dataset = CityscapesSegmentation(root_dir=data_dir, split='train_extra', transforms=transform, version="gtCoarse")
     return dataset
@@ -186,42 +178,41 @@ def main():
 if __name__ == '__main__':
 
 
-    def parse():
-        parser = argparse.ArgumentParser(description='Generating captions in test datasets.')
-        parser.add_argument('--data_root', type=str, default='datasets/', 
-                            help='root path to the datasets')
-        parser.add_argument('--save_root', type=str, default='experiments/', 
-                            help='root path for saving results')
-        parser.add_argument('--exp_tag', type=str, required=True, 
-                            help='tag for this experiment. caption results will be saved in save_root/exp_tag')
-        parser.add_argument('--datasets', nargs='+', choices=['artemis', 'cc_val', 'coco_val', 'para_test', 'pascal'], default=['coco_val'],
-                            help='Names of the datasets to use in the experiment. Valid datasets include artemis, cc_val, coco_val. Default is coco_val')
-        parser.add_argument('--n_rounds', type=int, default=10, 
-                            help='Number of QA rounds between GPT3 and BLIP-2. Default is 10, which costs about 2k tokens in GPT3 API.')
-        parser.add_argument('--n_blip2_context', type=int, default=1, 
-                            help='Number of QA rounds visible to BLIP-2. Default is 1, which means BLIP-2 only remember one previous question. -1 means BLIP-2 can see all the QA rounds')
-        parser.add_argument('--model', type=str, default='chatgpt', choices=['gpt3', 'chatgpt', 'text-davinci-003', 'text-davinci-002', 'davinci', 'gpt-3.5-turbo', 'FlanT5XXL', 'OPT'],
-                            help='model used to ask question. can be gpt3, chatgpt, or its concrete tags in openai system')
-        parser.add_argument('--device_id', type=int, default=0, 
-                            help='Which GPU to use.')
-
-        args = parser.parse_args()
-        return args
-
-    args = parse()
-    #data_dir= '/home/twshymy868/city_scape_synthetic/'
     data_dir="/media/rick/f7a9be3d-25cd-45d6-b503-7cb8bd32dbd5/cityscape_synthetic/"
-    batch_size = 256
+    save_dir="./cityscape_test_imgs/"
     split = 'train'
-    re_size = (256, 512)
-    dataset=main(args)
-    transform = transforms.Compose([
-    transforms.Resize((re_size)),
-    transforms.ToTensor(),
-    #transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-    ## convert back to PIL image
-    transforms.ToPILImage()
-    ])
+    img_size= 256
 
+    transform = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ## convert back to PIL image
+        ## transforms.ToPILImage()
+        ])
+    
+    dataset = CityscapesSegmentation(root_dir=data_dir, split='train_extra', img_size=img_size,  transforms=None, version="gtCoarse")
+    
+    images_names=[]
+    for i, (image_and_lable, img_names) in enumerate(dataset):
+        # do something with the image and label, for example print their shapes
+        image= image_and_lable[0]
+        label= image_and_lable[1]
+        print(f"Image shape: {image.size}, Label shape: {label.size}")
+        label.save('./cityscape_test_imgs/test_segment.png')
+        image.save('./cityscape_test_imgs/test_image.png')
+        #print("this is image name: ", img_names[i])
+        name= img_names[i]
+        name_start = str(name).find("/cityscape_synthetic/")
+        image_path = name[0][name_start-1:]
+        print(image_path)
+        images_names.append(image_path) 
+        if i==4: 
+            break
+    with open('./cityscape_test_imgs/images_names.json', 'a') as f:
+        json.dump(images_names, f)
+        f.write('\n')  
+   
+    
+    
 
 

@@ -1,36 +1,18 @@
+'''
+@TranRick 2023/07/30
+This code use to Generate the Visual Instruction dataset
 
-##********************************************************************************************
-## Step 3 Generate Caption ChatGPT & BLIP2 (Task Instructed Instructed)
-##********************************************************************************************
-
+'''
 import sys
-sys.path.append('/home/rick/DataEngine_Pro/Boostraping_Multi_modalities_SSL/DataModule/ChatCaptioner')
-#sys.path.append('/home/twshymy868/SSL_DataEngine/Boostraping_Multi_modalities_SSL/DataModule/ChatCaptioner')
 import yaml
 import torch
 
 from chatcaptioner.chat import set_openai_key, caption_images, get_instructions
 from chatcaptioner.blip2 import Blip2
 from chatcaptioner.utils import RandomSampledDataset, plot_img, print_info
-# openai.api_type = "azure"
-openai.api_base = "https://sslgroupservice.openai.azure.com/"
-openai.api_version = "2023-03-15-preview"
-openai_key = os.environ["OPENAI_API_KEY"]
 
-# CUDA_VISIBLE_DEVICES="1"
-# ## export OPENAI_API_KEY=0aee54a3f2df4c55aea57bf3cf2e99a6 #97f22a7a32ff4ff4902003896f247ca2
-# set_openai_key(openai_key)
-# ## Adding These Line of code in Chat.py if using Azure OpenAI
 
-'''
-    VALID_CHATGPT_MODELS = ['gpt-3.5-turbo', "gpt-35-turbo"]## lINE 54
-    from Line 74-> 77
-    openai.api_type = "azure"
-    openai.api_version = "2023-03-15-preview" 
-    openai.api_base = "https://sslgroupservice.openai.azure.com/"#os.getenv("OPENAI_API_BASE")  # Your Azure OpenAI resource's endpoint value.
-    openai.api_key = os.getenv("OPENAI_API_KEY")
-    question_model_tag ="gpt-35-turbo"
-''' 
+
 
     
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -43,11 +25,10 @@ blip2s = {
 }
 
 blip2s_q = {}
-
 ## ------------ Setting the Parameters -----------------
 
 # set the dataset to test
-dataset_name = 'cityscape_train_coarse_OPT_2_7_new'  # current options: 'artemis', 'cc_val', 'coco_val'
+dataset_name = 'cityscape_train_coarse_OPT_2b7'  # current options: 'artemis', 'cc_val', 'coco_val'
 # set the number of chat rounds between GPT3 and BLIP-2
 n_rounds = 8
 # set the number of visible chat rounds to BLIP-2. <0 means all the chat histories are visible.
@@ -55,7 +36,7 @@ n_blip2_context = 1
 # if print the chat out in the testing
 print_chat = True
 # set the question model
-question_model_tag ="gpt-35-turbo"## for OPENAI "gpt-3.5-turbo"
+question_model_tag ="gpt-4"##  "gpt-35-turbo"
 
 # ------------ Loading the Dataset -----------------
 ## preparing the folder to save results
