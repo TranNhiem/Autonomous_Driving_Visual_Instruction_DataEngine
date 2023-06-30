@@ -1,5 +1,5 @@
 '''
-@TranRick 2023/07/30
+@TranRick 2023/06/30
 This code features the following:
 1. Using GPT-3.5 or GPT-4 to Create Instruction input for Blip2 or InstructBLIP 
 2. Using BLIP2 or InstructBLIP to generate a Abstract Visual Information Summary 
@@ -19,8 +19,8 @@ from tenacity import (
 )  
 import backoff # for exponential backoff
 
-from blip import Blip2, instructblip2
-from chatcaptioner.utils import print_info, plot_img
+from blips import Viusal_Understanding
+
 
 
 #***************  Section 1 GPTs model to Create Prompt *****************#
@@ -29,7 +29,7 @@ from chatcaptioner.utils import print_info, plot_img
 
 input_INSTRUCTION = \
 "I have an image. " \
-"Ask me questions about the content of this image. " \
+"Ask me questions about the content of this image related to Driving Domain, the information providing is related to street views information. " \
 "Carefully asking me informative questions to maximize your information about this image content. " \
 "Each time ask one question only without giving an answer. " \
 "Avoid asking yes/no questions." \
@@ -45,7 +45,7 @@ sub_INSTRUCTION = \
 
 solution_INSTRUCTION = \
 'Now summarize the information you get in a few sentences. ' \
-'Ignore the questions with answers no or not sure. ' \
+'Based on the summarization you are a helpful assistant please provide some suggestion and advice to Driver. ' \
 'Don\'t add information. Don\'t miss information. \n' \
 'Summary: '
 
@@ -57,17 +57,17 @@ FIRST_QUESTION = 'Describe this image in detail.'
 VALID_CHATGPT_MODELS = ['gpt-4', "gpt-35-turbo"]
 VALID_GPT3_MODELS = ['text-davinci-003', 'text-davinci-002', 'davinci', 'gpt-4']
 
-def set_openai_key(key):
+def set_openai_key():
     openai.api_type = "azure"
     openai.api_version = "2023-03-15-preview" 
-    openai.api_base = "https://sslgroupservice.openai.azure.com/"#os.getenv("OPENAI_API_BASE")  # Your Azure OpenAI resource's endpoint value.
+    openai.api_base = "https://sslgroupservice.openai.azure.com/"
     openai.api_key = os.getenv("OPENAI_API_KEY")
     
 def get_instructions():
     instructions_dict = {
-        'question': QUESTION_INSTRUCTION, 
-        'sub_question': SUB_QUESTION_INSTRUCTION,
-        'summary': SUMMARY_INSTRUCTION,
+        'question': input_INSTRUCTION, 
+        'sub_question': sub_INSTRUCTION,
+        'summary': solution_INSTRUCTION,
         'answer': ANSWER_INSTRUCTION,
         'sub_answer': SUB_ANSWER_INSTRUCTION,
         'first_question': FIRST_QUESTION
@@ -80,20 +80,35 @@ def prepare_gpt_prompt(task_prompt, questions, answers, sub_prompt):
                              sub_prompt])
     return gpt_prompt
 
-@retry(wait=wait_random_exponential(min=1, max=60), stop=stop_after_attempt(6))
+@retry(wait=wait_random_exponential(min=1, max=60), stop=stop_after_attempt(10))
 def call_gpt3(gpt3_prompt, max_tokens=40, model="text-davinci-003"):  # 'text-curie-001' does work at all to ask questions
-    #response = openai.Completion.create(model=model, prompt=gpt3_prompt, max_tokens=max_tokens)  # temperature=0.6, 
+    
     response = openai.Completion.create(engine=model, prompt=gpt3_prompt, max_tokens=max_tokens)  # temperature=0.6, 
-
     reply = response['choices'][0]['text']
     total_tokens = response['usage']['total_tokens']
     return reply, total_tokens
 
 
+@retry(wait=wait_random_exponential(min=1, max=60), stop=stop_after_attempt(10))
+def call_chatgpt(chatgpt_messages, max_tokens=40, model="gpt-35-turbo"):
+    response = openai.ChatCompletion.create(engine=model, messages=chatgpt_messages,#[chatgpt_messages],
+    temperature=0.7,
+    max_tokens=max_tokens,
+    top_p=0.95,
+    frequency_penalty=1.2,
+    presence_penalty=0,
+    stop=None)
+    reply = response['choices'][0]['message']['content']
+    total_tokens = response['usage']['total_tokens']
+    return reply, total_tokens
+
+
+## Building Multiple Input Prompt to Maximizing the Information 
 def prepare_chatgpt_message(task_prompt, questions, answers, sub_prompt):
     messages = [{"role": "system", "content": task_prompt}]
     
     assert len(questions) == len(answers)
+    
     for q, a in zip(questions, answers):
         messages.append({'role': 'assistant', 'content': 'Question: {}'.format(q)})
         messages.append({'role': 'user', 'content': 'Answer: {}'.format(a)})
@@ -102,9 +117,6 @@ def prepare_chatgpt_message(task_prompt, questions, answers, sub_prompt):
     return messages
 
 
-#***************  Section 2 InstructBLIP and BLIP2 Generate Abstract Visual Understanding  *****************#
-
-    
 def get_chat_log(questions, answers, last_n=-1):
     n_addition_q = len(questions) - len(answers)
     assert (n_addition_q) in [0, 1]
@@ -126,29 +138,9 @@ def get_chat_log(questions, answers, last_n=-1):
     return chat_log
 
 
-
-
-
-@retry(wait=wait_random_exponential(min=1, max=60), stop=stop_after_attempt(6))
-def call_chatgpt(chatgpt_messages, max_tokens=40, model="gpt-35-turbo"):
-    # response = openai.ChatCompletion.create(model=model, messages=chatgpt_messages,
-    #                                          temperature=0.6, max_tokens=max_tokens)
-    response = openai.ChatCompletion.create(engine=model, messages=chatgpt_messages,#[chatgpt_messages],
-    temperature=0.7,
-    max_tokens=max_tokens,
-      top_p=0.95,
-      frequency_penalty=1.2,
-      presence_penalty=0,
-  stop=None)
-
-
-    reply = response['choices'][0]['message']['content']
-    total_tokens = response['usage']['total_tokens']
-    return reply, total_tokens
-
+#***************  Section 2 InstructBLIP and BLIP2 Generate Abstract Visual Understanding  *****************#
 
 class AskQuestions():
-
     def __init__(self, img, blip2, model, max_gpt_token=30, n_blip2_context=-1):
         self.img = img
         self.blip2 = blip2
