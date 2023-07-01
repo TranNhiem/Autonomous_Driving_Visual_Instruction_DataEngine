@@ -36,36 +36,7 @@ def resize_long_edge(image, target_size=384):
     resized_image = image.resize((new_width, new_height), Image.ANTIALIAS)
     return resized_image
 
-##------------------ Print information OF Input and output ------------------##
-def print_info(info, key='caption', variants=['BLIP2', 'BLIP2+OurPrompt', 'ChatCaptioner']):
-    img_id = info['setting']['id']
-    if 'GT' in info['setting']:
-        gt_captions = info['setting']['GT']['caption']
-        if isinstance(gt_captions, str) and len(gt_captions):
-            gt_captions = [gt_captions]
-            
-    else:
-        gt_captions = []
-    
-    print('Image ID {}'.format(img_id))
-    for blip2_tag in info:
-        if blip2_tag in ['GT', 'id', 'setting']: continue
-        for variant in variants:
-            if key not in info[blip2_tag][variant]:
-                continue
-            print('-------------------')
-            print('{} {}:'.format(blip2_tag, variant))
-            if key == 'chat' and isinstance(info[blip2_tag][variant][key], list):
-                for message in info[blip2_tag][variant][key]:
-                    print(message['content'])
-            else:
-                print(info[blip2_tag][variant][key])
-            if key == 'chat':
-                print(info[blip2_tag][variant]['caption'])
-        print('===================')
-    if key == 'caption' and len(gt_captions):
-        print('GT:')
-        [print(cap) for cap in gt_captions]
+
 
 ##------------------CityScape Dataloader ------------------## 
 
