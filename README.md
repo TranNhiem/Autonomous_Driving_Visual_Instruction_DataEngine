@@ -19,6 +19,7 @@
     + BLIP2 
     + InstructBLIP 
 
++ *Note*: All BLIP2 & InstructBLIP contain in *blips.py*
 
 ## Instruct LLM via GPT Model 
 
@@ -48,6 +49,8 @@
 
     + Create Instruction Input Corresponding to (Abstract information)
 
++ *Note*: To Construct GPT prompts instruction is contain in *llm_gpt.py*
+
 ## Generate Visual Instruction on StreetView Dataset 
 
 - Working on Public Dataset on StreetView dataset [Cityscape](https://www.cityscapes-dataset.com/dataset-overview/#features)
@@ -65,8 +68,14 @@
             └── val (19 City Folders)
     ```
 
++ *Note*: To Generate The frist Version of Visual instruction dataset contain *generate_data.py*
 
-## List of New Plan for Improvement 
+    ```
+    1st: export OPENAI_API_KEY=your key in terminal 
+    2nd: python generate_data.py
+    ```
+
+## Todo List for Improvement Next Version
 
 1. Continue via to Enrich Visual Information [Open-Flamingo](https://github.com/mlfoundations/open_flamingo), [Prismer](https://shikun.io/projects/prismer), [GRIT](https://github.com/JialianW/GRiT), [KOSMOS-2](https://github.com/microsoft/unilm/tree/master/kosmos-2)
 
