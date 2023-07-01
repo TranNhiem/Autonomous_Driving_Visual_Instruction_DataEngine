@@ -195,7 +195,7 @@ def main(args):
 
         ## If we want to Resize to Square 
         transform = transforms.Compose([
-            transforms.Resize((480, 480)),
+            transforms.Resize((256, 256)),
             transforms.ToTensor(),
             # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]), #mageNet normalization
             ## convert back to PIL image
@@ -219,7 +219,7 @@ def main(args):
             label= image_and_lable[1]
             print(f"Image shape: {image.size}, Segment Label shape: {label.size}")
             # label.save(f'./cityscape_test_imgs/test_segment_{i}.png')
-            image.save(f'./cityscape_test_imgs/test_image_{i}.png')
+            # image.save(f'./cityscape_test_imgs/test_image_{i}.png')
             name= img_names[i]
             name_start = str(name).find("/cityscape_synthetic/")
             image_path = name[0][name_start-1:]
@@ -262,11 +262,11 @@ if __name__ == '__main__':
         parser.add_argument('--save_path', type=str, default='./cityscape_test_imgs/', 
                             help='root path for saving results')
  
-        parser.add_argument('--blip_type_model', type=str, default='blip2', choices=['blip2', 'instructblip'], help='choosing type of BLIP  Model')
-        parser.add_argument('--blip_LLM', type=str, default='OPT2.7B COCO',choices= ['FlanT5 XXL','FlanT5 XL COCO','OPT6.7B COCO','OPT2.7B COCO', 'FlanT5 XL','OPT6.7B', 'OPT2.7B','Ins_FlanT5 XXL','Ins_FlanT5 XL','vicuna-13B', 'vicuna-7B',], 
+        parser.add_argument('--blip_type_model', type=str, default='instructblip', choices=['blip2', 'instructblip'], help='choosing type of BLIP  Model')
+        parser.add_argument('--blip_LLM', type=str, default='Ins_FlanT5 XL',choices= ['FlanT5 XXL','FlanT5 XL COCO','OPT6.7B COCO','OPT2.7B COCO', 'FlanT5 XL','OPT6.7B', 'OPT2.7B','Ins_FlanT5 XXL','Ins_FlanT5 XL','vicuna-13B', 'vicuna-7B',], 
                             help='choosing existing LLM from BLIP Available Model')
-        parser.add_argument('--blip_load_bit', type=int, default=4, choices=[4, 8, 16],help='choosing bit to load BLIP LLM model')
-        parser.add_argument('--cache_dir', type=str, default="/media/rick/f7a9be3d-25cd-45d6-b503-7cb8bd32dbd5/pretrained_weights/BLIP2/", 
+        parser.add_argument('--blip_load_bit', type=int, default=8, choices=[4, 8, 16],help='choosing bit to load BLIP LLM model')
+        parser.add_argument('--cache_dir', type=str, default="/media/rick/f7a9be3d-25cd-45d6-b503-7cb8bd32dbd5/pretrained_weights/Instruct_blip/", 
                             help='Saving and Loading the Pretrained in certain Directory instead save in Huggingface cache default')
         
         parser.add_argument('--n_blip2_context', type=int, default=-1, 
