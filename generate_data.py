@@ -238,11 +238,11 @@ def main(args):
             instruction_input_output.append(image_input_output)
             
             
-            if i==1: 
+            if i==1000: 
                 break
 
         
-        save_name= os.path.join(args.save_path, 'visual_instruction_data_blip2_opt2b7_gpt35.json')
+        save_name= os.path.join(args.save_path, 'visual_instruction_data_blip2_flanT5_XL_gpt35.json')
         with open(save_name, 'w') as f:
             json.dump(instruction_input_output, f)
 
@@ -262,11 +262,11 @@ if __name__ == '__main__':
         parser.add_argument('--save_path', type=str, default='./cityscape_test_imgs/', 
                             help='root path for saving results')
  
-        parser.add_argument('--blip_type_model', type=str, default='instructblip', choices=['blip2', 'instructblip'], help='choosing type of BLIP  Model')
-        parser.add_argument('--blip_LLM', type=str, default='Ins_FlanT5 XL',choices= ['FlanT5 XXL','FlanT5 XL COCO','OPT6.7B COCO','OPT2.7B COCO', 'FlanT5 XL','OPT6.7B', 'OPT2.7B','Ins_FlanT5 XXL','Ins_FlanT5 XL','vicuna-13B', 'vicuna-7B',], 
+        parser.add_argument('--blip_type_model', type=str, default='blip2', choices=['blip2', 'instructblip'], help='choosing type of BLIP  Model')
+        parser.add_argument('--blip_LLM', type=str, default='FlanT5 XL COCO',choices= ['FlanT5 XXL','FlanT5 XL COCO','OPT6.7B COCO','OPT2.7B COCO', 'FlanT5 XL','OPT6.7B', 'OPT2.7B','Ins_FlanT5 XXL','Ins_FlanT5 XL','vicuna-13B', 'vicuna-7B',], 
                             help='choosing existing LLM from BLIP Available Model')
-        parser.add_argument('--blip_load_bit', type=int, default=8, choices=[4, 8, 16],help='choosing bit to load BLIP LLM model')
-        parser.add_argument('--cache_dir', type=str, default="/media/rick/f7a9be3d-25cd-45d6-b503-7cb8bd32dbd5/pretrained_weights/Instruct_blip/", 
+        parser.add_argument('--blip_load_bit', type=int, default=4, choices=[4, 8, 16],help='choosing bit to load BLIP LLM model')
+        parser.add_argument('--cache_dir', type=str, default="/media/rick/f7a9be3d-25cd-45d6-b503-7cb8bd32dbd5/pretrained_weights/BLIP2/", 
                             help='Saving and Loading the Pretrained in certain Directory instead save in Huggingface cache default')
         
         parser.add_argument('--n_blip2_context', type=int, default=-1, 

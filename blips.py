@@ -94,11 +94,17 @@ class Viusal_Understanding():
             model = InstructBlipForConditionalGeneration.from_pretrained(
                 InstructBLIPDICT[self.blip_model], 
                 cache_dir=self.cache_dir,
-                torch_dtype=self.data_type, 
+                torch_dtype=self.data_type if self.load_bit !=8 or self.load_bit !=4 else None, 
                 quantization_config=quant_config, 
+                # load_in_8bit=True, 
                 trust_remote_code=True
 
             )
+            # for name, module in model.named_modules():
+            #     if "norm" in name:
+            #         print(name)
+            #         module = module.to(torch.float)
+    
         # for gpu with small memory
         elif self.visual_understand == 'blip':
             print("Using BLIP")
@@ -115,6 +121,10 @@ class Viusal_Understanding():
     def abstract_visual_output(self, raw_image, instruction_input, llm_decoding_strategy="nucleus", max_length=512):
         inputs = self.processor(raw_image, instruction_input, return_tensors="pt").to(self.device, torch.float16)
         
+        # for key in inputs:
+        #     inputs[key] = inputs[key].float()
+        #inputs = inputs.to(self.device)
+        
         if llm_decoding_strategy == "beam_search":
             out = self.model.generate(**inputs, num_beams=5,
                                       max_length=max_length,
@@ -127,7 +137,7 @@ class Viusal_Understanding():
         
         elif llm_decoding_strategy =="contrastive_search": 
             out = self.model.generate(**inputs, max_length=max_length, penalty_alpha=0.6, top_k=6, repetition_penalty=1.5,)
-
+        out.to(self.device)
         answer = self.processor.decode(out[0], skip_special_tokens=True).strip()
         return answer
     
