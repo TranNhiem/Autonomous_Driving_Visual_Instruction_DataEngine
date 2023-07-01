@@ -36,6 +36,36 @@ def resize_long_edge(image, target_size=384):
     resized_image = image.resize((new_width, new_height), Image.ANTIALIAS)
     return resized_image
 
+##------------------ Print information OF Input and output ------------------##
+def print_info(info, key='caption', variants=['BLIP2', 'BLIP2+OurPrompt', 'ChatCaptioner']):
+    img_id = info['setting']['id']
+    if 'GT' in info['setting']:
+        gt_captions = info['setting']['GT']['caption']
+        if isinstance(gt_captions, str) and len(gt_captions):
+            gt_captions = [gt_captions]
+            
+    else:
+        gt_captions = []
+    
+    print('Image ID {}'.format(img_id))
+    for blip2_tag in info:
+        if blip2_tag in ['GT', 'id', 'setting']: continue
+        for variant in variants:
+            if key not in info[blip2_tag][variant]:
+                continue
+            print('-------------------')
+            print('{} {}:'.format(blip2_tag, variant))
+            if key == 'chat' and isinstance(info[blip2_tag][variant][key], list):
+                for message in info[blip2_tag][variant][key]:
+                    print(message['content'])
+            else:
+                print(info[blip2_tag][variant][key])
+            if key == 'chat':
+                print(info[blip2_tag][variant]['caption'])
+        print('===================')
+    if key == 'caption' and len(gt_captions):
+        print('GT:')
+        [print(cap) for cap in gt_captions]
 
 ##------------------CityScape Dataloader ------------------## 
 
@@ -133,7 +163,8 @@ class CityscapesSegmentation(Dataset):
 
         if self.transforms is not None:
             image = self.transforms(image)
-         
+            img_size = image.size
+            label = transforms.Resize((img_size[1], img_size[0]), Image.NEAREST)(label)
     
         return image, label
     
@@ -183,14 +214,16 @@ if __name__ == '__main__':
     split = 'train'
     img_size= 256
 
+    ## If want to Resize and Transform Image via ImageNet normalization and Resize Square 
     transform = transforms.Compose([
+        transforms.Resize((256, 256)),
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ## convert back to PIL image
-        ## transforms.ToPILImage()
+        transforms.ToPILImage()
         ])
     
-    dataset = CityscapesSegmentation(root_dir=data_dir, split='train_extra', img_size=img_size,  transforms=None, version="gtCoarse")
+    dataset = CityscapesSegmentation(root_dir=data_dir, split='train_extra', img_size=img_size,  transforms=transform, version="gtCoarse")
     
     images_names=[]
     for i, (image_and_lable, img_names) in enumerate(dataset):
@@ -198,8 +231,8 @@ if __name__ == '__main__':
         image= image_and_lable[0]
         label= image_and_lable[1]
         print(f"Image shape: {image.size}, Label shape: {label.size}")
-        label.save('./cityscape_test_imgs/test_segment.png')
-        image.save('./cityscape_test_imgs/test_image.png')
+        label.save(f'./cityscape_test_imgs/test_segment_{i}.png')
+        image.save(f'./cityscape_test_imgs/test_image_{i}.png')
         #print("this is image name: ", img_names[i])
         name= img_names[i]
         name_start = str(name).find("/cityscape_synthetic/")
@@ -208,10 +241,9 @@ if __name__ == '__main__':
         images_names.append(image_path) 
         if i==4: 
             break
-    with open('./cityscape_test_imgs/images_names.json', 'a') as f:
+    with open('./cityscape_test_imgs/images_names.json', 'w') as f:
         json.dump(images_names, f)
-        f.write('\n')  
-   
+      
     
     
 
