@@ -1,0 +1,206 @@
+[
+    {
+        "image_name": "cityscape_synthetic/leftImg8bit/train/dusseldorf/dusseldorf_000109_000019_leftImg8bit.png",
+        "visual_instruction_data": {
+            "Visual_instruction": {
+                "instruction_input_response_suggestion": "The image shows a town area with quiet, mostly residential surroundings, possibly in Europe. A car is visible in the lane and there are pedestrians nearby. The road appears to be free of any traffic signs or signals, construction or maintenance activities.  Suggestions for the driver: 1. Drive cautiously and be aware of pedestrians and other road users. 2. Familiarize yourself with local traffic rules if you're unfamiliar with European driving regulations. 3. Keep an eye out for any upcoming traffic signs or signals that",
+                "each_input_response": [
+                    {
+                        "role": "system",
+                        "content": "I have an image. Ask me questions about the content of this image related to Driving Domain, the information providing is related to street views information. Carefully asking me informative questions to maximize your information about this image content. Each time ask one question only without giving an answer. Avoid asking many yes/no questions.I'll put my answer beginning with \"Answer:\"."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Describe this image in detail."
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: This is an image from a public road, probably taken by a dash camera"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: What type of road is in the image, and can you describe its markings and lanes?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: This is a town area, very similar to Amsterdam and other European countries"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any vehicles visible in the image, and if so, can you describe them?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: There is a car in the lane, with a rear passenger seat partially in the image"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: What are the surroundings of the road like - buildings, vegetation, or other notable features?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: This is a quiet and mostly residential area, that is changing with housebuilding"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any pedestrians, cyclists, or other road users visible in the image?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: These people are located in the photo.  Also in the near by distance, but they are not visible in the picture"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: What are the traffic signs or road signals, if any, visible in the image?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: * This is not an image of a road sign;  * There are no traffic signs in the photo;  * There is no traffic sign in the picture;"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: What is the weather and lighting condition in the image?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: __________________________________________________ __________________________________________________"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Is the road wet or dry, and are there any indications of recent rain or snow in the image?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: _____________________________________________________ _____________________________________________________"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any construction or maintenance activities visible along the road in the image?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: _______________________________________________________ _______________________________________________________"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Can you describe the overall atmosphere or mood of the street in this image?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: _______________________________________________________ _______________________________________________________"
+                    },
+                    {
+                        "role": "system",
+                        "content": "Now summarize the information you get from abstract visual information. Based on the summarize information, you are a helpful assistant please provide some suggestions, advices and other assistance to Driver. Don't add information. Don't miss information. \nSummary: "
+                    }
+                ],
+                "n_token": 3616
+            },
+            "BLIP_short_captioning": {
+                "image_caption": "the view from the front of a vehicle"
+            }
+        }
+    },
+    {
+        "image_name": "cityscape_synthetic/leftImg8bit/train/dusseldorf/dusseldorf_000027_000019_leftImg8bit.png",
+        "visual_instruction_data": {
+            "Visual_instruction": {
+                "instruction_input_response_suggestion": "The image shows a rainy city street with poor road conditions, impaired visibility, and no crosswalk at the intersection. There are two cars visible in the picture, one dark blue with a license plate. A traffic light is present on the side of the road. There are no pedestrians or cyclists in sight.  As a helpful assistant to a driver in this situation, I would suggest:  1. Slow down and maintain a safe distance from other vehicles due to reduced visibility and poor road conditions. 2. Be",
+                "each_input_response": [
+                    {
+                        "role": "system",
+                        "content": "I have an image. Ask me questions about the content of this image related to Driving Domain, the information providing is related to street views information. Carefully asking me informative questions to maximize your information about this image content. Each time ask one question only without giving an answer. Avoid asking many yes/no questions.I'll put my answer beginning with \"Answer:\"."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Describe this image in detail."
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: blurry picture, some white lines that are traveling at different speeds, a traffic light, a store window, some cars, a crosswalk, trees, and buildings.   Thank you."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: What type of road is shown in the image, and how many lanes does it have?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: It is a city street with no crosswalk at the crossroad.   Thank you."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any traffic signs or signals visible in the image?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: There is no light pole or traffic signal in the picture.   Thank you."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Can you identify any specific landmarks or businesses in the image?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: This is a city street with stores and buildings, and it is clear from the picture that it is raining.    Thank you."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any pedestrians or cyclists visible in the image?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: No. There are no cyclists and there is no pedestrian presence in the picture.   Thank you.BBC presenter Moira Stuart faints live on air"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: What is the overall condition of the road surface in the image?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: The road is in poor condition due to the rain.   Thank you."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any parked cars or vehicles in motion visible in the image?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: Yes, one car with a license plate and another one.   Thank you."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: What color are the vehicles visible in the image, and do they have any distinguishing features?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: The color of the car is dark blue.   Thank you."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: How is the visibility in the image, considering it's raining?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: Due to the rain, the visibility is impaired but the cars are clear and are visable.   Thank you."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any unique or unusual features in the image that stand out?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: It is dark and a traffic light is on the side of the road.    Thank you.Got to support your teams play in all sports, it is kinda crazy to me how badly the Reds are being beat up this year."
+                    },
+                    {
+                        "role": "system",
+                        "content": "Now summarize the information you get from abstract visual information. Based on the summarize information, you are a helpful assistant please provide some suggestions, advices and other assistance to Driver. Don't add information. Don't miss information. \nSummary: "
+                    }
+                ],
+                "n_token": 3864
+            },
+            "BLIP_short_captioning": {
+                "image_caption": "an empty street with a bar closing sign on it"
+            }
+        }
+    }
+]

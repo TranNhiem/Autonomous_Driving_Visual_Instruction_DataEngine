@@ -28,14 +28,14 @@ def set_openai_key():
     openai.api_base = "https://sslgroupservice.openai.azure.com/"
     openai.api_key = os.getenv("OPENAI_API_KEY")
     
-def get_instructions(input_INSTRUCTION,sub_INSTRUCTION, solution_INSTRUCTION,ANSWER_INSTRUCTION, SUB_ANSWER_INSTRUCTION, FIRST_QUESTION):
+def get_instructions(input_INSTRUCTION,sub_INSTRUCTION, solution_INSTRUCTION,ANSWER_INSTRUCTION, SUB_ANSWER_INSTRUCTION, FIRST_instruction):
     instructions_dict = {
         'question': input_INSTRUCTION, 
         'sub_question': sub_INSTRUCTION,
         'summary': solution_INSTRUCTION,
         'answer': ANSWER_INSTRUCTION,
         'sub_answer': SUB_ANSWER_INSTRUCTION,
-        'first_question': FIRST_QUESTION
+        'first_question': FIRST_instruction
     }
     return instructions_dict
 
@@ -111,7 +111,7 @@ class Generate_instruction_Input_output():
                  sub_INSTRUCTION, 
                  VALID_CHATGPT_MODELS, VALID_GPT3_MODELS,
                  ANSWER_INSTRUCTION, SUB_ANSWER_INSTRUCTION,
-                 max_gpt_token=100, n_blip2_context=-1,):
+                 max_gpt_token=100, n_blip2_context=-1,debug=False):
         
         self.img = img
         self.blip2 = blip2
@@ -134,6 +134,7 @@ class Generate_instruction_Input_output():
         self.questions = []
         self.answers = []
         self.total_tokens = 0
+        self.debug = debug
 
     def reset(self, img):
         self.img = img
@@ -172,7 +173,8 @@ class Generate_instruction_Input_output():
                 raise ValueError('{} is not a valid question model'.format(self.model))
 
             self.total_tokens = self.total_tokens + n_tokens
-
+        if self.debug:
+            print(question)
         return question
 
     def question_trim(self, question):
@@ -183,15 +185,18 @@ class Generate_instruction_Input_output():
                 question = a.strip()
             else:
                 question = q.strip()
+        
         return question
 
-    def answer_question(self, BLIP_llm_decoding_strategy="nucleus", BLIP_max_length_token_output=100):
+    def answer_question(self, decoding_strategy="nucleus", max_length=100):
         # prepare the context for blip2
         blip2_prompt = '\n'.join([self.ANSWER_INSTRUCTION,
                                   get_chat_log(self.questions, self.answers, last_n=self.n_blip2_context),
                                   self.SUB_ANSWER_INSTRUCTION])
 
-        answer = self.blip2.abstract_visual_output(self.img, blip2_prompt,llm_decoding_strategy=BLIP_llm_decoding_strategy,max_length=BLIP_max_length_token_output) )
+        answer = self.blip2.abstract_visual_output(self.img, blip2_prompt,llm_decoding_strategy=decoding_strategy,max_length=max_length) 
+        if self.debug:
+            print("Answer:", answer)
         return answer
 
     def answer_trim(self, answer):
@@ -202,7 +207,7 @@ class Generate_instruction_Input_output():
     def chatting(self, n_rounds, print_mode, BLIP_llm_decoding_strategy="nucleus", BLIP_max_length_token_output=100):
         
         if print_mode == 'chat':
-            print('--------Chat Starts----------')
+            print('-------- Instruction Input & Response ----------')
 
         for i in tqdm(range(n_rounds), desc='Chat Rounds', disable=print_mode != 'bar'):
             question = self.ask_question()
@@ -217,7 +222,7 @@ class Generate_instruction_Input_output():
             elif print_mode == 'gradio':
                 gr_chatbot = gr_chatbot + [[question, None]]
 
-            answer = self.answer_question(BLIP_llm_decoding_strategy="nucleus", BLIP_max_length_token_output=100)
+            answer = self.answer_question(decoding_strategy=BLIP_llm_decoding_strategy, max_length=BLIP_max_length_token_output)
             answer = self.answer_trim(answer)
             self.answers.append(answer)
 
@@ -229,6 +234,6 @@ class Generate_instruction_Input_output():
                 self.gr_chatbot[-1][1] = answer
 
         if print_mode == 'chat':
-            print('--------Chat Ends----------')
+            print('--------     Ends  ----------')
 
         return self.questions, self.answers, self.total_tokens

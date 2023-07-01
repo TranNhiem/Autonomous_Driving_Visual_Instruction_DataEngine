@@ -15,7 +15,7 @@ from transformers import (Blip2Processor, Blip2ForConditionalGeneration, BlipPro
 import torch
 from utils import resize_long_edge
 from torchvision import transforms
-
+from pathlib import Path
 ## Initialize the Pretrained Models From Huggingface Transformers
 
 BLIP2DICT = {
@@ -39,13 +39,14 @@ InstructBLIPDICT = {
 
 
 class Viusal_Understanding():
-    def __init__(self, device, base_model='instructblip', blip_model="OPT2.7B COCO", cache_dir='/media/rick/f7a9be3d-25cd-45d6-b503-7cb8bd32dbd5/pretrained_weights/BLIP2', load_bit=8):
+    def __init__(self, device, base_model='instructblip', blip_model="OPT2.7B COCO",  load_bit=8, cache_dir='/media/rick/f7a9be3d-25cd-45d6-b503-7cb8bd32dbd5/pretrained_weights/BLIP2',):
         self.device = device
         self.visual_understand = base_model
         self.blip_model = blip_model
+        print(cache_dir)
         self.load_bit = load_bit
-        cache_dir='/media/rick/f7a9be3d-25cd-45d6-b503-7cb8bd32dbd5/pretrained_weights/BLIP2'
-        self.cache_dir = cache_dir #
+        self.cache_dir=Path(cache_dir) #'/media/rick/f7a9be3d-25cd-45d6-b503-7cb8bd32dbd5/pretrained_weights/BLIP2'
+        #self.cache_dir = cache_dir #
         self.processor, self.model = self.initialize_model()
        
     def initialize_model(self,):
@@ -79,17 +80,18 @@ class Viusal_Understanding():
             quant_config = None
 
         if self.visual_understand == 'blip2':
+            print("Using BLIP2")
             processor = Blip2Processor.from_pretrained(BLIP2DICT[self.blip_model],cache_dir=self.cache_dir, trust_remote_code=True,use_auth_token=True )#
-            
           
             model = Blip2ForConditionalGeneration.from_pretrained(
                 BLIP2DICT[self.blip_model],  
                 cache_dir=self.cache_dir,
-                torch_dtype=self.data_type, 
+                torch_dtype=self.data_type if self.load_bit !=8 or self.load_bit !=4 else None, 
                 quantization_config=quant_config, 
                 trust_remote_code=True
             )
         elif self.visual_understand == 'instructblip':
+            print("Using instructBLIP")
             processor = InstructBlipProcessor.from_pretrained(InstructBLIPDICT[self.blip_model], cache_dir=self.cache_dir, trust_remote_code=True, use_auth_token=True)
             model = InstructBlipForConditionalGeneration.from_pretrained(
                 InstructBLIPDICT[self.blip_model], 
@@ -101,12 +103,13 @@ class Viusal_Understanding():
             )
         # for gpu with small memory
         elif self.visual_understand == 'blip':
+            print("Using BLIP")
             processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
             model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base", torch_dtype=self.data_type, )
         else:
             raise ValueError(f'This {self.visual_understand} based Model is not supported')
         
-        if self.load_bit !=8 or self.load_bit !=4:
+        if self.load_bit == 16:
             model.to(self.device)
 
         return processor, model
@@ -124,7 +127,7 @@ class Viusal_Understanding():
         elif llm_decoding_strategy == "nucleus":
             out = self.model.generate(**inputs, do_sample=True, max_length=max_length, top_p=0.95, top_k=0)
         
-        elif llm_decoding_strategy =="contrastive": 
+        elif llm_decoding_strategy =="contrastive_search": 
             out = self.model.generate(**inputs, max_length=max_length, penalty_alpha=0.6, top_k=6, repetition_penalty=1.5,)
 
         answer = self.processor.decode(out[0], skip_special_tokens=True).strip()
@@ -140,7 +143,7 @@ class Viusal_Understanding():
 def main(device, image_src, base_model, blip_model, cache_dir, load_bit, instruction_input):
     image = Image.open(image_src)
     image = resize_long_edge(image, 224)
-    visual_understanding_model=Viusal_Understanding(device, base_model=base_model,blip_model=blip_model, cache_dir=cache_dir, load_bit=load_bit)
+    visual_understanding_model=Viusal_Understanding(device=device, base_model=base_model, blip_model=blip_model, load_bit=load_bit,  cache_dir=cache_dir,)
     respones = visual_understanding_model.abstract_visual_output(image, instruction_input)
     print(respones)
    
@@ -150,11 +153,11 @@ if __name__ == '__main__':
     image_path="/media/rick/f7a9be3d-25cd-45d6-b503-7cb8bd32dbd5/cityscape_synthetic/leftImg8bit/train/bochum/bochum_000000_000600_leftImg8bit.png"
     device = "cuda" if torch.cuda.is_available() else "cpu"
     base_model = "blip2" # ['instructblip' , 'blip2' ]
-    blip_model="FlanT5 XXL" # ["vicuna-7B", "OPT2.7B COCO", "OPT6.7B COCO",] 
-    cache_dir='/media/rick/f7a9be3d-25cd-45d6-b503-7cb8bd32dbd5/pretrained_weights/Instruct_blip/'
+    blip_model="OPT2.7B COCO" # ["vicuna-7B", "OPT2.7B COCO", "OPT6.7B COCO",] 
+    cache_dir='/media/rick/f7a9be3d-25cd-45d6-b503-7cb8bd32dbd5/pretrained_weights/BLIP2/'
     if not os.path.exists(cache_dir):
         os.makedirs(cache_dir)
     load_bit=4
     instruction_input = "A photo of"#"Describe this image in detail"
-    main(device, image_path, base_model,blip_model, load_bit, cache_dir, instruction_input )
+    main(device, image_path, base_model=base_model,blip_model=blip_model, load_bit=load_bit, cache_dir=cache_dir, instruction_input=instruction_input )
     
