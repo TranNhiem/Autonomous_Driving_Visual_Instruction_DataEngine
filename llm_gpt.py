@@ -2,8 +2,8 @@
 @TranRick 2023/06/30
 This code features the following:
 1. Using GPT-3.5 or GPT-4 to Create Instruction input for Blip2 or InstructBLIP 
-2. Using BLIP2 or InstructBLIP to generate a Abstract Visual Information Summary 
-3. Using GPT-3.5 or GPT-4 to generate a Advice, Suggestions, or Solution etc.. 
+2. Using BLIP2 or InstructBLIP to generate a Answer (Abstract Visual Information Summary )
+
 '''
 
 import os
@@ -137,6 +137,9 @@ class Generate_instruction_Input_output():
         self.debug = debug
 
     def reset(self, img):
+        """
+        Resets the state of the generator.
+        """
         self.img = img
         self.questions = []
         self.answers = []
@@ -218,9 +221,6 @@ class Generate_instruction_Input_output():
             if print_mode == 'chat':
                 #print('GPT: {}'.format(question))
                 print(f"Model: {self.model}, question: {question}")
-            
-            elif print_mode == 'gradio':
-                gr_chatbot = gr_chatbot + [[question, None]]
 
             answer = self.answer_question(decoding_strategy=BLIP_llm_decoding_strategy, max_length=BLIP_max_length_token_output)
             answer = self.answer_trim(answer)
@@ -229,9 +229,7 @@ class Generate_instruction_Input_output():
             if print_mode == 'chat':
                 #print('BLIP-2: {}'.format(answer))
                 print(f"BLIP_Model: {self.blip2.visual_understand}, answer: {answer}")
-            
-            elif print_mode == 'gradio':
-                self.gr_chatbot[-1][1] = answer
+
 
         if print_mode == 'chat':
             print('--------     Ends  ----------')

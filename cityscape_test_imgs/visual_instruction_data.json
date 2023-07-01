@@ -3,7 +3,7 @@
         "image_name": "cityscape_synthetic/leftImg8bit/train/dusseldorf/dusseldorf_000109_000019_leftImg8bit.png",
         "visual_instruction_data": {
             "Visual_instruction": {
-                "instruction_input_response_suggestion": "The image shows a town area with quiet, mostly residential surroundings, possibly in Europe. A car is visible in the lane and there are pedestrians nearby. The road appears to be free of any traffic signs or signals, construction or maintenance activities.  Suggestions for the driver: 1. Drive cautiously and be aware of pedestrians and other road users. 2. Familiarize yourself with local traffic rules if you're unfamiliar with European driving regulations. 3. Keep an eye out for any upcoming traffic signs or signals that",
+                "instruction_input_response_suggestion": "Based on the limited information provided, it seems that the image is of a cloudy European street with small cars and some people sitting. There are two parked cars side by side and a tall building visible in the background. The color of traffic lights and type of trees or shops cannot be determined from the information given.  As an AI assistant, I suggest that drivers should always be cautious when driving on streets with pedestrians present, especially if they are sitting along the road. It is also important to follow traffic rules",
                 "each_input_response": [
                     {
                         "role": "system",
@@ -15,89 +15,89 @@
                     },
                     {
                         "role": "user",
-                        "content": "Answer: This is an image from a public road, probably taken by a dash camera"
+                        "content": "Answer: The street has a lot of very small cars. One car is slow to drive."
                     },
                     {
                         "role": "assistant",
-                        "content": "Question: What type of road is in the image, and can you describe its markings and lanes?"
+                        "content": "Question: What type of road is visible in the image?"
                     },
                     {
                         "role": "user",
-                        "content": "Answer: This is a town area, very similar to Amsterdam and other European countries"
+                        "content": "Answer: A normal street. A European street."
                     },
                     {
                         "role": "assistant",
-                        "content": "Question: Are there any vehicles visible in the image, and if so, can you describe them?"
+                        "content": "Question: What type of vehicles can be seen in the image?"
                     },
                     {
                         "role": "user",
-                        "content": "Answer: There is a car in the lane, with a rear passenger seat partially in the image"
+                        "content": "Answer: The classic city car.January 5, 2021"
                     },
                     {
                         "role": "assistant",
-                        "content": "Question: What are the surroundings of the road like - buildings, vegetation, or other notable features?"
+                        "content": "Question: What is the weather like in the image?"
                     },
                     {
                         "role": "user",
-                        "content": "Answer: This is a quiet and mostly residential area, that is changing with housebuilding"
+                        "content": "Answer: The weather in the image is cloudy. It is kind of foggy, if I recall. Not bright."
                     },
                     {
                         "role": "assistant",
-                        "content": "Question: Are there any pedestrians, cyclists, or other road users visible in the image?"
+                        "content": "Question: What landmarks or buildings can be seen in the image?"
                     },
                     {
                         "role": "user",
-                        "content": "Answer: These people are located in the photo.  Also in the near by distance, but they are not visible in the picture"
+                        "content": "Answer: The tall building to the left of the smaller buildings. Is that a building? It looks like a building to me. Can it be said to be a building? February 1, 2009"
                     },
                     {
                         "role": "assistant",
-                        "content": "Question: What are the traffic signs or road signals, if any, visible in the image?"
+                        "content": "Question: What kind of activities are people doing on the street?"
                     },
                     {
                         "role": "user",
-                        "content": "Answer: * This is not an image of a road sign;  * There are no traffic signs in the photo;  * There is no traffic sign in the picture;"
+                        "content": "Answer: Apparently, people are sitting on the street. To some, it may look like a nice sitting spot. But to others, it may look like people are just sitting. It is hard to tell. February 1, 2009"
                     },
                     {
                         "role": "assistant",
-                        "content": "Question: What is the weather and lighting condition in the image?"
+                        "content": "Question: What kind of vehicles are parked on the side of the street?"
                     },
                     {
                         "role": "user",
-                        "content": "Answer: __________________________________________________ __________________________________________________"
+                        "content": "Answer: It is kind of a strange thought. Two cars parked side by side, slightly apart. It is hard to tell if they are parked directly in front or if they are parked slightly off to the side.  February 1, 2009"
                     },
                     {
                         "role": "assistant",
-                        "content": "Question: Is the road wet or dry, and are there any indications of recent rain or snow in the image?"
+                        "content": "Question: What is the color of the traffic lights in the image?"
                     },
                     {
                         "role": "user",
-                        "content": "Answer: _____________________________________________________ _____________________________________________________"
+                        "content": "Answer: ____. Is the color \"___\" correct? If it was wrong, tell me what you think the correct answer should be."
                     },
                     {
                         "role": "assistant",
-                        "content": "Question: Are there any construction or maintenance activities visible along the road in the image?"
+                        "content": "Question: What type of trees or plants can be seen in the image?"
                     },
                     {
                         "role": "user",
-                        "content": "Answer: _______________________________________________________ _______________________________________________________"
+                        "content": "Answer: ____. Can you say what type of trees or plants you think the people on the street have planted?"
                     },
                     {
                         "role": "assistant",
-                        "content": "Question: Can you describe the overall atmosphere or mood of the street in this image?"
+                        "content": "Question: What kind of shops or stores can be seen in the image?"
                     },
                     {
                         "role": "user",
-                        "content": "Answer: _______________________________________________________ _______________________________________________________"
+                        "content": "Answer: ____. Can you say what kind of shops or stores you think are visible in the image?"
                     },
                     {
                         "role": "system",
                         "content": "Now summarize the information you get from abstract visual information. Based on the summarize information, you are a helpful assistant please provide some suggestions, advices and other assistance to Driver. Don't add information. Don't miss information. \nSummary: "
                     }
                 ],
-                "n_token": 3616
+                "n_token": 3838
             },
             "BLIP_short_captioning": {
-                "image_caption": "the view from the front of a vehicle"
+                "image_caption": "cars going down a narrow street in a city"
             }
         }
     },
@@ -105,7 +105,7 @@
         "image_name": "cityscape_synthetic/leftImg8bit/train/dusseldorf/dusseldorf_000027_000019_leftImg8bit.png",
         "visual_instruction_data": {
             "Visual_instruction": {
-                "instruction_input_response_suggestion": "The image shows a rainy city street with poor road conditions, impaired visibility, and no crosswalk at the intersection. There are two cars visible in the picture, one dark blue with a license plate. A traffic light is present on the side of the road. There are no pedestrians or cyclists in sight.  As a helpful assistant to a driver in this situation, I would suggest:  1. Slow down and maintain a safe distance from other vehicles due to reduced visibility and poor road conditions. 2. Be",
+                "instruction_input_response_suggestion": "The image is a street-level view of an intersection on a highway that goes from Berlin to Milan. There are no buildings or vegetation visible in the picture, and there are no visible markings or speed limits on the highway. The weather is cloudy with some sun at the edge of the image, and there are other vehicles traveling from right to left.  Based on this information, as an AI assistant, I suggest that drivers should always be cautious while driving and maintain safe speeds while following traffic laws. It's",
                 "each_input_response": [
                     {
                         "role": "system",
@@ -117,89 +117,89 @@
                     },
                     {
                         "role": "user",
-                        "content": "Answer: blurry picture, some white lines that are traveling at different speeds, a traffic light, a store window, some cars, a crosswalk, trees, and buildings.   Thank you."
+                        "content": "Answer: The image has nothing in it.  There is nothing at all in the image."
                     },
                     {
                         "role": "assistant",
-                        "content": "Question: What type of road is shown in the image, and how many lanes does it have?"
+                        "content": "Question: What type of road can be seen in the image?"
                     },
                     {
                         "role": "user",
-                        "content": "Answer: It is a city street with no crosswalk at the crossroad.   Thank you."
+                        "content": "Answer: The road is a highway."
                     },
                     {
                         "role": "assistant",
-                        "content": "Question: Are there any traffic signs or signals visible in the image?"
+                        "content": "Question: What is the speed limit for vehicles on this highway?"
                     },
                     {
                         "role": "user",
-                        "content": "Answer: There is no light pole or traffic signal in the picture.   Thank you."
+                        "content": "Answer: There is no speed limit on this highway.  The vehicles can move at the speed of their choosing."
                     },
                     {
                         "role": "assistant",
-                        "content": "Question: Can you identify any specific landmarks or businesses in the image?"
+                        "content": "Question: What type of vehicles can be seen on the highway in the image?"
                     },
                     {
                         "role": "user",
-                        "content": "Answer: This is a city street with stores and buildings, and it is clear from the picture that it is raining.    Thank you."
+                        "content": "Answer: Other vehicles."
                     },
                     {
                         "role": "assistant",
-                        "content": "Question: Are there any pedestrians or cyclists visible in the image?"
+                        "content": "Question: What is the color of the markings on the highway?"
                     },
                     {
                         "role": "user",
-                        "content": "Answer: No. There are no cyclists and there is no pedestrian presence in the picture.   Thank you.BBC presenter Moira Stuart faints live on air"
+                        "content": "Answer: I do not know.  I don't know the color of the markings on the highway.  They are not noticeable.  No particular color."
                     },
                     {
                         "role": "assistant",
-                        "content": "Question: What is the overall condition of the road surface in the image?"
+                        "content": "Question: What is the weather like in the image?"
                     },
                     {
                         "role": "user",
-                        "content": "Answer: The road is in poor condition due to the rain.   Thank you."
+                        "content": "Answer: It is cloudy.  There is some type of cloud cover.  The sun is visible at the edge of the image.Youtube will show you your skill at playing a particular card. Watch tutorial videos for different cards to understand which cards are used in ladder and where you can put your elixir to get this specific card."
                     },
                     {
                         "role": "assistant",
-                        "content": "Question: Are there any parked cars or vehicles in motion visible in the image?"
+                        "content": "Question: What type of vegetation can be seen on the sides of the highway in the image?"
                     },
                     {
                         "role": "user",
-                        "content": "Answer: Yes, one car with a license plate and another one.   Thank you."
+                        "content": "Answer: There are no sides of the highway.  The picture is a street-angle image that is taken from a city that is located on the east side of Europe"
                     },
                     {
                         "role": "assistant",
-                        "content": "Question: What color are the vehicles visible in the image, and do they have any distinguishing features?"
+                        "content": "Question: What type of buildings can be seen near the highway in the image?"
                     },
                     {
                         "role": "user",
-                        "content": "Answer: The color of the car is dark blue.   Thank you."
+                        "content": "Answer: There are no buildings near the highway.  It is an open area."
                     },
                     {
                         "role": "assistant",
-                        "content": "Question: How is the visibility in the image, considering it's raining?"
+                        "content": "Question: What is the direction of the vehicles on the highway in the image?"
                     },
                     {
                         "role": "user",
-                        "content": "Answer: Due to the rain, the visibility is impaired but the cars are clear and are visable.   Thank you."
+                        "content": "Answer: It is going from the right to the left.  It will be heading towards Milan from Berlin."
                     },
                     {
                         "role": "assistant",
-                        "content": "Question: Are there any unique or unusual features in the image that stand out?"
+                        "content": "Question: What is the make or model of any vehicle visible in the image?"
                     },
                     {
                         "role": "user",
-                        "content": "Answer: It is dark and a traffic light is on the side of the road.    Thank you.Got to support your teams play in all sports, it is kinda crazy to me how badly the Reds are being beat up this year."
+                        "content": "Answer: There are no vehicles visible in the image.  The picture is an intersection.  The vehicles in the picture are not visible.  I do not know the make or model of any vehicles visible in the picture.  I do not know any vehicles visible in the picture."
                     },
                     {
                         "role": "system",
                         "content": "Now summarize the information you get from abstract visual information. Based on the summarize information, you are a helpful assistant please provide some suggestions, advices and other assistance to Driver. Don't add information. Don't miss information. \nSummary: "
                     }
                 ],
-                "n_token": 3864
+                "n_token": 3786
             },
             "BLIP_short_captioning": {
-                "image_caption": "an empty street with a bar closing sign on it"
+                "image_caption": "an empty intersection in the city on a cloudy day"
             }
         }
     }

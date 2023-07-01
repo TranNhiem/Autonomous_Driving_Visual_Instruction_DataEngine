@@ -17,7 +17,6 @@ from utils import resize_long_edge
 from torchvision import transforms
 from pathlib import Path
 ## Initialize the Pretrained Models From Huggingface Transformers
-
 BLIP2DICT = {
     'FlanT5 XXL': 'Salesforce/blip2-flan-t5-xxl',
     'FlanT5 XL COCO': 'Salesforce/blip2-flan-t5-xl-coco',
@@ -35,7 +34,6 @@ InstructBLIPDICT = {
     'vicuna-13B': 'Salesforce/instructblip-vicuna-13b',
     'vicuna-7B': 'Salesforce/instructblip-vicuna-7b',
 }
-
 
 
 class Viusal_Understanding():
