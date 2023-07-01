@@ -206,8 +206,8 @@ if __name__ == '__main__':
         image_path = name[0][name_start-1:]
         print(image_path)
         images_names.append(image_path) 
-        if i==4: 
-            break
+        # if i==4: 
+        #     break
     with open('./cityscape_test_imgs/images_names.json', 'w') as f:
         json.dump(images_names, f)
       

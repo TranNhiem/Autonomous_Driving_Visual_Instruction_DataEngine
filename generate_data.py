@@ -17,7 +17,7 @@ from llm_gpt import (Generate_instruction_Input_output, call_chatgpt,
                      call_gpt3, get_instructions, prepare_chatgpt_message,
                      prepare_gpt_prompt, set_openai_key)
 from torchvision import transforms
-from utils import CityscapesSegmentation, print_info
+from utils import CityscapesSegmentation
 
 ##***************************************************************************************************
 ## ------------  Section 1 Setting the Parameters and Configure BLIP Model -----------------
@@ -242,7 +242,7 @@ def main(args):
                 break
 
         
-        save_name= os.path.join(args.save_path, 'visual_instruction_data.json')
+        save_name= os.path.join(args.save_path, 'visual_instruction_data_blip2_opt2b7_gpt35.json')
         with open(save_name, 'w') as f:
             json.dump(instruction_input_output, f)
 
