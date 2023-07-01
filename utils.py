@@ -172,10 +172,6 @@ class CityscapesSegmentation(Dataset):
             return image_ids, image_names
         
 
-def main(args):
-
-    dataset = CityscapesSegmentation(root_dir=data_dir, split='train_extra', transforms=transform, version="gtCoarse")
-    return dataset
 
 if __name__ == '__main__':
 
