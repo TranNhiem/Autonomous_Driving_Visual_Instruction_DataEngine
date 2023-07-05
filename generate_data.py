@@ -142,7 +142,7 @@ def visual_instruction_input_response(blip, image, GPT_model, n_rounds=10, max_g
 
     ## Append all Question and Answer (chat history) and Final Suggestion and Summary
     
-    results['Visual_instruction'] = {'instruction_input_response_suggestion': summary, 'each_input_response': summary_prompt, 'n_token': n_token_chat + n_token_sum}
+    results['Visual_instruction'] = {'instruction_input_recsponse_suggestion': summary, 'each_input_response': summary_prompt, 'n_token': n_token_chat + n_token_sum}
     ## Get all the Answers from BLIP2
     #results['BLIP2_response'] = {'blip_response': answers}#[0]
     ## Default BLIP2 caption
@@ -219,7 +219,7 @@ def main(args):
             label= image_and_lable[1]
             print(f"Image shape: {image.size}, Segment Label shape: {label.size}")
             # label.save(f'./cityscape_test_imgs/test_segment_{i}.png')
-            # image.save(f'./cityscape_test_imgs/test_image_{i}.png')
+            # image.save(f'./cityscape_test_imgs/gtfine_test_image_{i}.png')
             name= img_names[i]
             name_start = str(name).find("/cityscape_synthetic/")
             image_path = name[0][name_start-1:]
@@ -238,11 +238,11 @@ def main(args):
             instruction_input_output.append(image_input_output)
             
             
-            if i==1000: 
+            if i==20: 
                 break
 
         
-        save_name= os.path.join(args.save_path, 'visual_instruction_data_blip2_flanT5_XL_gpt35.json')
+        save_name= os.path.join(args.save_path, 'visual_instruction_data_blip2_vicuna_13B_gpt4_20_img.json')
         with open(save_name, 'w') as f:
             json.dump(instruction_input_output, f)
 
@@ -254,7 +254,7 @@ if __name__ == '__main__':
     
     def parse():
         parser = argparse.ArgumentParser(description='Generating captions in test datasets.')
-        parser.add_argument('--data_dir', type=str, default="/media/rick/f7a9be3d-25cd-45d6-b503-7cb8bd32dbd5/cityscape_synthetic/", 
+        parser.add_argument('--data_dir', type=str, default="/data1/dataset/Cityscapes/", 
                             help='root path to the datasets')
         parser.add_argument('--datasets', nargs='+', choices=['cityscape', 'kitty', 'waymo', 'others'], default='cityscape',
                         help='Names of the datasets to use in the experiment.  Default is Cityscape.')
@@ -262,16 +262,16 @@ if __name__ == '__main__':
         parser.add_argument('--save_path', type=str, default='./cityscape_test_imgs/', 
                             help='root path for saving results')
  
-        parser.add_argument('--blip_type_model', type=str, default='blip2', choices=['blip2', 'instructblip'], help='choosing type of BLIP  Model')
-        parser.add_argument('--blip_LLM', type=str, default='FlanT5 XL COCO',choices= ['FlanT5 XXL','FlanT5 XL COCO','OPT6.7B COCO','OPT2.7B COCO', 'FlanT5 XL','OPT6.7B', 'OPT2.7B','Ins_FlanT5 XXL','Ins_FlanT5 XL','vicuna-13B', 'vicuna-7B',], 
+        parser.add_argument('--blip_type_model', type=str, default='instructblip', choices=['blip2', 'instructblip'], help='choosing type of BLIP  Model')
+        parser.add_argument('--blip_LLM', type=str, default='vicuna-13B',choices= ['FlanT5 XXL','FlanT5 XL COCO','OPT6.7B COCO','OPT2.7B COCO', 'FlanT5 XL','OPT6.7B', 'OPT2.7B','Ins_FlanT5 XXL','Ins_FlanT5 XL','vicuna-13B', 'vicuna-7B',], 
                             help='choosing existing LLM from BLIP Available Model')
-        parser.add_argument('--blip_load_bit', type=int, default=4, choices=[4, 8, 16],help='choosing bit to load BLIP LLM model')
-        parser.add_argument('--cache_dir', type=str, default="/media/rick/f7a9be3d-25cd-45d6-b503-7cb8bd32dbd5/pretrained_weights/BLIP2/", 
+        parser.add_argument('--blip_load_bit', type=int, default=8, choices=[4, 8, 16],help='choosing bit to load BLIP LLM model ## Noted for FlantT5 Family should use bit=16 to avoid error')
+        parser.add_argument('--cache_dir', type=str, default="/data/rick/pretrained_weights/Instruct_blip/", 
                             help='Saving and Loading the Pretrained in certain Directory instead save in Huggingface cache default')
         
         parser.add_argument('--n_blip2_context', type=int, default=-1, 
                             help='Number of QA rounds visible to BLIP-2. Default is 1, which means BLIP-2 only remember one previous question. -1 means BLIP-2 can see all the QA rounds')
-        parser.add_argument('--blip2_llm_decoding_strategy', type=str, default='nucleus',choices=['beam_search', 'nucleus', 'contrastive_search'], 
+        parser.add_argument('--blip2_llm_decoding_strategy', type=str, default='contrastive_search',choices=['beam_search', 'nucleus', 'contrastive_search'], 
                             help='Decoding strategy for BLIP-2 LLM. Default is nucleus sampling.')
         parser.add_argument('--bli2_max_lenght_token_gen', type=int, default=100, 
                             help='Max length of tokens generated by BLIP-2 LLM. Default is 100.')
@@ -280,7 +280,7 @@ if __name__ == '__main__':
                             help='Number of QA rounds between GPT and BLIP. Default is 10, which costs about 3k tokens in GPT API.')
         parser.add_argument('--chat_mode', type=str, default="chat", choices=['chat', 'no'],
                             help='chat mode or no chat mode if chat mode, it will print out the chat history')
-        parser.add_argument('--gpt_model', type=str, default='chatgpt', choices=['gpt-4','gpt-35-turbo',  'gpt3', 'text-davinci-003' ],
+        parser.add_argument('--gpt_model', type=str, default='gpt-35-turbo', choices=['gpt-4','gpt-35-turbo',  'gpt3', 'text-davinci-003' ],
                             help='model used to ask question. can be gpt3, chatgpt, or its concrete tags in openai system')
         
         args = parser.parse_args()

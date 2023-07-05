@@ -3,7 +3,7 @@
 </h1>
 
 <div align="center">
-     <img width="auto" height="300px" src="./cityscape_test_imgs/assistant_driving_pipline_blip_gpt.png"/>
+     <img width="auto" height="300px" src="./cityscape_test_imgs/autonomous_visual_instruction_dataengine.png"/>
 </div>
 
 # Project Features
