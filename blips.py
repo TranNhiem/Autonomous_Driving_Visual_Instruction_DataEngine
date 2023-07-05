@@ -100,10 +100,13 @@ class Viusal_Understanding():
                 trust_remote_code=True
 
             )
-            # for name, module in model.named_modules():
-            #     if "norm" in name:
-            #         print(name)
-            #         module = module.to(torch.float)
+            if "FlanT5" in self.blip_model: 
+                print("normalize the norm layer")
+                for name, module in model.named_modules():
+                    if "norm" in name:
+                        #print(name)
+                        #module = module.to(torch.float)
+                        module=module.Half()
     
         # for gpu with small memory
         elif self.visual_understand == 'blip':
@@ -133,7 +136,7 @@ class Viusal_Understanding():
                                       length_penalty=1.0,
                                       temperature=1,)
         elif llm_decoding_strategy == "nucleus":
-            out = self.model.generate(**inputs, do_sample=True, max_length=max_length, top_p=0.95, top_k=0)
+            out = self.model.generate(**inputs, do_sample=True, max_length=max_length, temperature=1, top_p=0.95, top_k=0, repetition_penalty=1.5,length_penalty=1.0,)
         
         elif llm_decoding_strategy =="contrastive_search": 
             out = self.model.generate(**inputs, max_length=max_length, penalty_alpha=0.6, top_k=6, repetition_penalty=1.5,)
@@ -157,15 +160,14 @@ def main(device, image_src, base_model, blip_model, cache_dir, load_bit, instruc
    
    
 if __name__ == '__main__':
-
-    image_path="/media/rick/f7a9be3d-25cd-45d6-b503-7cb8bd32dbd5/cityscape_synthetic/leftImg8bit/train/bochum/bochum_000000_000600_leftImg8bit.png"
+    image_path="/data/rick/autonomous_instruction_dataengine/Autonomous_Driving_Visual_Instruction_DataEngine/cityscape_test_imgs/test_image_0.png"
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    base_model = "blip2" # ['instructblip' , 'blip2' ]
-    blip_model="OPT2.7B COCO" # ["vicuna-7B", "OPT2.7B COCO", "OPT6.7B COCO",] 
-    cache_dir='/media/rick/f7a9be3d-25cd-45d6-b503-7cb8bd32dbd5/pretrained_weights/BLIP2/'
+    base_model = "instructblip" # ['instructblip' , 'blip2' ]
+    blip_model="Ins_FlanT5 XXL" # ["vicuna-7B", "OPT2.7B COCO", "OPT6.7B COCO",] 
+    cache_dir='/data/rick/pretrained_weights/Instruct_blip/'
     if not os.path.exists(cache_dir):
         os.makedirs(cache_dir)
-    load_bit=4
+    load_bit=16
     instruction_input = "A photo of"#"Describe this image in detail"
     main(device, image_path, base_model=base_model,blip_model=blip_model, load_bit=load_bit, cache_dir=cache_dir, instruction_input=instruction_input )
     

@@ -71,6 +71,9 @@ class CityscapesSegmentation(Dataset):
 
         self.images = []
         for city_dir in os.listdir(self.image_dir):
+            ## Harry added cityscape DA_Data dataset
+            if city_dir == "DA_Data": 
+                continue
             city_image_dir = os.path.join(self.image_dir, city_dir)
             for image_name in os.listdir(city_image_dir):
                 image_path = os.path.join(city_image_dir, image_name)
@@ -78,6 +81,7 @@ class CityscapesSegmentation(Dataset):
                     label_name = '{}_gtFine_color.png'.format(image_name.split('_leftImg8bit')[0])
                 else:
                     label_name = '{}_gtCoarse_color.png'.format(image_name.split('_leftImg8bit')[0])
+                
                 label_path = os.path.join(self.label_dir, city_dir, label_name)
                 assert os.path.isfile(image_path), f"{image_path} does not exist"
                 assert os.path.isfile(label_path), f"{label_path} does not exist"
