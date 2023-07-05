@@ -158,14 +158,21 @@ def main(device, image_src, base_model, blip_model, cache_dir, load_bit, instruc
    
 if __name__ == '__main__':
 
-    image_path="/media/rick/f7a9be3d-25cd-45d6-b503-7cb8bd32dbd5/cityscape_synthetic/leftImg8bit/train/bochum/bochum_000000_000600_leftImg8bit.png"
+    # image_path="/media/rick/f7a9be3d-25cd-45d6-b503-7cb8bd32dbd5/cityscape_synthetic/leftImg8bit/train/bochum/bochum_000000_000600_leftImg8bit.png"
+    image_path = "/data/kinan/driving_assistant/Driving_Assistant/cityscape_test_imgs/test_image_1.png"
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    base_model = "blip2" # ['instructblip' , 'blip2' ]
-    blip_model="OPT2.7B COCO" # ["vicuna-7B", "OPT2.7B COCO", "OPT6.7B COCO",] 
-    cache_dir='/media/rick/f7a9be3d-25cd-45d6-b503-7cb8bd32dbd5/pretrained_weights/BLIP2/'
+    base_model = "instructblip" # ['instructblip' , 'blip2' ]
+    blip_model = "vicuna-7B" # ["vicuna-7B", "OPT2.7B COCO", "OPT6.7B COCO",] 
+    cache_dir = '/data/rick/pretrained_weights/Instruct_blip/'
     if not os.path.exists(cache_dir):
         os.makedirs(cache_dir)
     load_bit=4
-    instruction_input = "A photo of"#"Describe this image in detail"
+    # instruction_input = "This is a picture from the front-view camera of a car. \
+    # You are a helpful driving assistant. Please give the driver of the car a \
+    # useful suggestion or warning:"#"Describe this image in detail: " # "Describe this image in detail", "A photo of"
+    instruction_input = "This is a picture from the front-view camera of a car. \
+        You are a helpful driving assistant. \
+        The driver has asked you the following question: 'How much traffic is there in front of me?'\
+        Please give the driver of the car a helpful, detailed answer:"#"Describe this image in detail: " # "Describe this image in detail", "A photo of"
     main(device, image_path, base_model=base_model,blip_model=blip_model, load_bit=load_bit, cache_dir=cache_dir, instruction_input=instruction_input )
     
