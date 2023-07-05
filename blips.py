@@ -100,10 +100,13 @@ class Viusal_Understanding():
                 trust_remote_code=True
 
             )
-            # for name, module in model.named_modules():
-            #     if "norm" in name:
-            #         print(name)
-            #         module = module.to(torch.float)
+            if "FlanT5" in self.blip_model: 
+                print("normalize the norm layer")
+                for name, module in model.named_modules():
+                    if "norm" in name:
+                        #print(name)
+                        #module = module.to(torch.float)
+                        module=module.Half()
     
         # for gpu with small memory
         elif self.visual_understand == 'blip':
@@ -133,7 +136,7 @@ class Viusal_Understanding():
                                       length_penalty=1.0,
                                       temperature=1,)
         elif llm_decoding_strategy == "nucleus":
-            out = self.model.generate(**inputs, do_sample=True, max_length=max_length, top_p=0.95, top_k=0)
+            out = self.model.generate(**inputs, do_sample=True, max_length=max_length, temperature=1, top_p=0.95, top_k=0, repetition_penalty=1.5,length_penalty=1.0,)
         
         elif llm_decoding_strategy =="contrastive_search": 
             out = self.model.generate(**inputs, max_length=max_length, penalty_alpha=0.6, top_k=6, repetition_penalty=1.5,)
