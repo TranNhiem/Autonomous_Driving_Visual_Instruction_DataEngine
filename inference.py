@@ -63,16 +63,14 @@ def make_instruction_input(base_question=None, driver_question=None, direction=N
     out += "You are a helpful driving assistant. "
     if gps is not None:
         out += f"The car is located at {gps}. "
-    if driver_question is not None:
-        out += f"The driver has asked you the following question: '{driver_question}'. "
     if driver_info is not None:
         out += f"Here is some information about the driver: {driver_info}. "
-
-    if base_question is not None:
-        out += base_question
-    else:
+    if driver_question is not None:
+        out += f"The driver has asked you the following question: '{driver_question}'. "
         out += f"Please give the driver a helpful, detailed answer: "
-
+    else:
+        out += f"Please give the driver a useful suggestion or warning: "
+        
     print("Prompt to BLIP:")
     print(out)
     print()
