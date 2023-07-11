@@ -57,9 +57,9 @@ def make_instruction_input(base_question=None, driver_question=None, direction=N
     '''
     out = ''
     if direction is not None:
-        out += f"This is a picture from the {direction}-facing camera of a car. "
+        out += f"This is a picture from the {direction} camera of a car. "
     else:
-        out += "This is a picture from the front-facing camera of a car. "
+        out += "This is a picture from the front camera of a car. "
     out += "You are a helpful driving assistant. "
     if gps is not None:
         out += f"The car is located at {gps}. "
@@ -112,14 +112,14 @@ if __name__ == "__main__":
 
     img_path_List = []
     img_path = "/data/kinan/driving_assistant/Driving_Assistant/other_test_images/4cam_tests/LINE_ALBUM_AttractionPlaceTesting_230707_15.jpg"
-    img_path_List.append(img_path)
+    [img_path_List.append(img_path) for i in range(6)]
 
     instruction_input_List = []
     instruction_input = make_instruction_input(direction='left')
-
+    
     # instruction_input = make_instruction_input(driver_question='How can I get to my destination faster?', 
     #                                            direction='left')
-    instruction_input_List.append(instruction_input)
+    [instruction_input_List.append(instruction_input) for i in range(6)]
     
     print("BLIP response:\n")
     main(img_path_List,
