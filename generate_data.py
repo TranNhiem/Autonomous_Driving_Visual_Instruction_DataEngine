@@ -50,7 +50,7 @@ BLIP_max_length_token_output=100
 
 
 ##***************************************************************************************************
-##  Section 2  onstruct Instruction Input from GPT and Instruction Responese from BLIP --> Suggestions & Solution from GPT -----------------
+##  Section 2  Construct Instruction Input from GPT and Instruction Responese from BLIP --> Suggestions & Solution from GPT -----------------
 ##***************************************************************************************************
   
 
@@ -66,14 +66,18 @@ VALID_GPT3_MODELS = ['text-davinci-003', 'text-davinci-002', 'davinci']
 
 ## 1.1 Setting Prompt to GPTs Model to Create Instruction input for Blip2 or InstructBLIP
 
-input_INSTRUCTION = \
-"I have an image. " \
-"Ask me questions about the content of this image related to Driving Domain, the information providing is related to street views information. " \
-"Carefully asking me informative questions to maximize your information about this image content. " \
-"Each time ask one question only without giving an answer. " \
-"Avoid asking many yes/no questions." \
-"I'll put my answer beginning with \"Answer:\"." \
+# input_INSTRUCTION = \
+# "I have an image from the camera of a car. " \
+# "Please ask me informative questions about the content of this image to maximize the information you receive. "\
+# "Ask me questions related to the Driving Domain, specifically driving safety, tips, and information about the surroundings. " \
+# "Each time, ask only one question without providing an answer. " \
+# "Avoid asking many yes/no questions. " \
+# "I will provide my response starting with 'Answer:'. " \
 
+
+target_topic_instruction = "In this task, I have an image related to the driving domain, specifically street view information. I would like you to ask me informative questions about the content of this image based on the following topics and domains:\n\n1. Object Detection & Recognition:\n1.1 Lane Detection and Lane Keeping:\n    - Identifying and tracking road lanes\n    - Lane marking classification (e.g., solid lines, dashed lines, arrows)\n    - Lane keeping assistance to ensure the vehicle stays within the lanes\n\n1.2 Pedestrian Detection & Tracking:\n    - Handling challenges such as occlusion, varying poses, and crowded scenarios\n    - Predicting pedestrian intentions for better interaction with autonomous vehicles\n\n1.3 Vehicles Detection:\n    - Detecting and recognizing cars, trucks, motorcycles, bicycles, etc.\n    - Handling varying scales, viewpoints, and occlusions in vehicle detection\n\n1.4 Traffic Sign Detection and Recognition:\n    - Localizing and recognizing traffic signs\n    - Understanding the state of traffic lights (e.g., red, green, yellow)\n    - Interpreting traffic sign meanings (e.g., speed limits, yield, no entry)\n\n1.5 Other Objects in Street View Images:\n    - Detecting and recognizing other objects present in street view images\n\n2. Road Scene Understanding & Event Detection:\n2.1 Road Event Detection:\n    - Detecting and recognizing different events on the road (e.g., road closures, construction, accidents, roadblocks)\n\n2.2 Road Anomaly Detection:\n    - Detecting and recognizing unusual or anomalous objects or situations on the road\n    - Identifying breakdowns, abnormal road conditions, etc.\n    - Providing early warning systems for nearby vehicles and authorities\n\n2.3 Road Condition Detection:\n    - Estimating road surface conditions (e.g., wet, icy, potholes) from visual street view images\n    - Monitoring road surface conditions for maintenance and safety purposes\n\n2.4 Road Safety Condition:\n    - Detecting and recognizing crosswalks and pedestrian zones in street view images\n    - Assessing pedestrian safety and identifying potential hazards\n\n3. Driving Weather and Driving Condition State:\n3.1 Detecting Weather Condition:\n    - Identifying weather conditions such as foggy, snowy, sunny, rainy, etc.\n\n3.2 Detecting the Day State:\n    - Assessing the lighting conditions during the day (e.g., low light, well visible, dark)\n\nEach time, please ask me one question related to the selected topic without providing the answer. Avoid asking many yes/no questions. I will provide the answer to each question starting with 'Answer:'. Feel free to ask as many questions as you need to maximize your understanding of the image content."
+## Testing case
+input_INSTRUCTION=target_topic_instruction
 
 sub_INSTRUCTION = \
 "Next Question. Avoid asking yes/no questions. \n" \
@@ -82,11 +86,19 @@ sub_INSTRUCTION = \
 
 ## 1.2 Setting Prompt for GPTs Model Provide the Advice and Suggestion 
 
+
 solution_INSTRUCTION = \
-'Now summarize the information you get from abstract visual information. ' \
-'Based on the summarize information, you are a helpful assistant please provide some suggestions, advices and other assistance to Driver. ' \
-'Don\'t add information. Don\'t miss information. \n' \
-'Summary: '
+'This is a description of what can be seen through the cameras of a car.' \
+'You are a helpful driving assistant. ' \
+'First, summarize the information provided. ' \
+'Then, provide a suggestion, advice, warning, or other assistance to the driver based on the information. ' \
+'Response: '
+
+# solution_INSTRUCTION = \
+# 'Now summarize the information you get from abstract visual information. ' \
+# 'Based on the summarize information, you are a helpful assistant please provide some suggestions, advices and other assistance to Driver. ' \
+# 'Don\'t add information. Don\'t miss information. \n' \
+# 'Summary: '
 
 
 ANSWER_INSTRUCTION = 'Answer given questions. If you are not sure about the answer, say you don\'t know honestly. Don\'t imagine any contents that are not in the image.'
