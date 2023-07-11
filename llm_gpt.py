@@ -25,7 +25,7 @@ import backoff # for exponential backoff
 def set_openai_key():
     openai.api_type = "azure"
     openai.api_version = "2023-03-15-preview" 
-    openai.api_base = "https://agentgpt.openai.azure.com/" #"https://sslgroupservice.openai.azure.com/"
+    openai.api_base ="https://sslgroupservice.openai.azure.com/" # "https://agentgpt.openai.azure.com/" #
     openai.api_key = os.getenv("OPENAI_API_KEY")
     
 def get_instructions(input_INSTRUCTION,sub_INSTRUCTION, solution_INSTRUCTION,ANSWER_INSTRUCTION, SUB_ANSWER_INSTRUCTION, FIRST_instruction):
