@@ -309,8 +309,60 @@ def main(args):
         with open(save_name, 'w') as f:
             json.dump(instruction_input_output, f)
 
-    else: 
-         raise NotImplementedError('Dataset {} is currently not supported.'.format(args.datasets))
+    elif args.datasets == 'multiview':
+        # Any dataset with images of multiple directions of the car
+        # Assumed structure:
+        # dataset = [{'left': Image, 'right': Image, 'front': Image, 'back': Image, 
+        #             'label': label, 'name': name}, ...]
+
+        img_size= 480 # Resize Corresponding Original Image Shape if transform is None
+
+        ## If we want to Resize to Square 
+        transform = transforms.Compose([
+            transforms.Resize((256, 256)),
+            transforms.ToTensor(),
+            # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]), #mageNet normalization
+            ## convert back to PIL image
+            transforms.ToPILImage()
+            ])
+        
+        blip = get_blip_model(base_model=args.blip_type_model, blip_model=args.blip_LLM , cache_dir=args.cache_dir, load_bit=args.blip_load_bit)
+        
+        instruction_input_output=[]
+        for i, (image_and_lable, img_names) in enumerate(dataset):
+            # do something with the image and label, for example print their shapes
+            image= image_and_lable[0]
+            label= image_and_lable[1]
+            print(f"Image shape: {image.size}, Segment Label shape: {label.size}")
+            # label.save(f'./cityscape_test_imgs/test_segment_{i}.png')
+            # image.save(f'./cityscape_test_imgs/gtfine_test_image_{i}.png')
+            name= img_names[i]
+            name_start = str(name).find("/cityscape_synthetic/")
+            image_path = name[0][name_start-1:]
+            #images_names.append(image_path) 
+
+            ## Generate Visual Instruction Dataset
+            visual_instruction_data= generate(blip, image, args.gpt_model, 
+                                               n_rounds=10,
+                                               n_blip2_context=args.n_blip2_context,
+                                               print_mode=args.chat_mode, 
+                                               BLIP_max_length_token_output=args.bli2_max_lenght_token_gen, 
+                                               BLIP_llm_decoding_strategy=args.blip2_llm_decoding_strategy
+                                               )
+            
+            image_input_output={'image_name': image_path, 'visual_instruction_data': visual_instruction_data}
+            instruction_input_output.append(image_input_output)
+            
+            
+            if i==20: 
+                break
+
+        
+        save_name= os.path.join(args.save_path, 'visual_instruction_data_blip2_vicuna_13B_gpt4_20_img.json')
+        with open(save_name, 'w') as f:
+            json.dump(instruction_input_output, f)
+    else:
+        raise NotImplementedError('Dataset {} is currently not supported.'.format(args.datasets))
       
 
 if __name__ == '__main__':
