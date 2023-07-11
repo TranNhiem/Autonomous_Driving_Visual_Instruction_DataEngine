@@ -197,6 +197,57 @@ def generate(blip, image, GPT_model, n_rounds=10, n_blip2_context=-1, print_mode
     return visual_instruction_data
 
 
+def generate_multiview(blip, images, GPT_model, n_rounds=10, n_blip2_context=-1, print_mode='chat', BLIP_max_length_token_output=100, BLIP_llm_decoding_strategy='nucleus'):
+    '''
+    Caption a set of multiview images
+
+    Combines the responses of LLM to each direction's image to make a final suggestion to the driver.
+
+    Args:
+        images: a dictionary of {direction: image}. direction is the direction of the image. image is the PIL image
+    
+    '''
+    if GPT_model == 'gpt3':
+        GPT_model = 'text-davinci-003'
+    elif GPT_model == 'chatgpt':
+        GPT_model = 'gpt-35-turbo'
+
+    out = {}
+    for direction, image in images.items():
+
+        visual_instruction_data = visual_instruction_input_response(blip=blip, 
+                                            image=image, 
+                                            GPT_model=GPT_model,
+                                            n_rounds=n_rounds, 
+                                            n_blip2_context=n_blip2_context, 
+                                            print_mode=print_mode, 
+                                            BLIP_llm_decoding_strategy=BLIP_llm_decoding_strategy, 
+                                            BLIP_max_length_token_output=BLIP_max_length_token_output, 
+                                            )
+        out[direction] = visual_instruction_data
+    
+    ## Combine the responses of LLM to each direction's image to make a final suggestion to the driver.
+    combined_information = ''
+    for direction, visual_instruction_data in out.items():
+        combined_information += f'{direction} side camera:\n'
+        combined_information += visual_instruction_data['Visual_instruction']['instruction_input_recsponse_suggestion'] + '\n\n'
+
+
+    final_suggestion_prompt = combined_information + \
+        'Above is your combined information and suggestions from all directions of the car. \
+        Based on this information, give a final suggestion, warning, advice, or other assistance to the driver. \
+        Response: '
+    
+    print('Final suggestion prompt: ')
+    print(final_suggestion_prompt)
+
+    if GPT_model == 'text-davinci-003':
+        final_suggestion = call_gpt3(final_suggestion_prompt, GPT_model, max_token=100)
+    elif GPT_model == 'gpt-35-turbo':
+        final_suggestion = call_chatgpt(final_suggestion_prompt, GPT_model, max_token=100)
+    
+    return final_suggestion
+
 def main(args): 
     if args.datasets == 'cityscape':
         ## ------------ Loading the Dataset -----------------
