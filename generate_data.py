@@ -50,7 +50,7 @@ BLIP_max_length_token_output=100
 
 
 ##***************************************************************************************************
-##  Section 2  onstruct Instruction Input from GPT and Instruction Responese from BLIP --> Suggestions & Solution from GPT -----------------
+##  Section 2  Construct Instruction Input from GPT and Instruction Responese from BLIP --> Suggestions & Solution from GPT -----------------
 ##***************************************************************************************************
   
 
