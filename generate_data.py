@@ -132,7 +132,6 @@ def summarize_and_suggestion(questions, answers, model, max_gpt_token=100):
     summary = summary.replace('\n', ' ').strip()
     return summary, summary_prompt, n_tokens
 
-
 def visual_instruction_input_response(blip, image, GPT_model, n_rounds=10, max_gpt_token=100, n_blip2_context=-1, print_mode='chat', BLIP_llm_decoding_strategy="nucleus", BLIP_max_length_token_output=100):
     
 
