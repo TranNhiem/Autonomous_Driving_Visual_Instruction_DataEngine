@@ -50,17 +50,25 @@ def get_blip_model(device='cuda', base_model="blip2", blip_model="OPT2.7B COCO" 
 # BLIP_llm_decoding_strategy="nucleus"
 # BLIP_max_length_token_output=100 
 
-def make_instruction_input(base_question=None, driver_question=None, direction=None, gps=None, driver_info=None):
+def make_instruction_input(main_question=None, role_prompt=None, driver_question=None, direction=None, gps=None, driver_info=None):
     '''
     Make the instruction prompt input to the BLIP model based on if there is a specified
         driver question, camera direction, gps, or other driver info.
     '''
     out = ''
     if direction is not None:
-        out += f"This is a picture from the {direction}-facing camera of a car. "
+        out += f"This is a picture from the {direction} camera of a car. "
     else:
-        out += "This is a picture from the front-facing camera of a car. "
+<<<<<<< HEAD
+        out += "This is a picture from the front camera of a car. "
     out += "You are a helpful driving assistant. "
+=======
+        out += "This is a picture from the front-facing camera of a car. "
+    if role_prompt is not None:
+        out += role_prompt
+    else:
+        out += "You are a helpful driving assistant. "
+>>>>>>> 12f73aa2a3da062b3fc0e2dd4484d43a84f702f0
     if gps is not None:
         out += f"The car is located at {gps}. "
     if driver_info is not None:
@@ -68,6 +76,8 @@ def make_instruction_input(base_question=None, driver_question=None, direction=N
     if driver_question is not None:
         out += f"The driver has asked you the following question: '{driver_question}'. "
         out += f"Please give the driver a helpful, detailed answer: "
+    elif main_question is not None:
+        out += main_question
     else:
         out += f"Please give the driver a useful suggestion or warning: "
         
@@ -99,9 +109,9 @@ if __name__ == "__main__":
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    base_model = "instructblip" # ['instructblip' , 'blip2' ]
-    blip_model = "vicuna-7B" # ["vicuna-7B", "OPT2.7B COCO", "OPT6.7B COCO",] 
-    cache_dir = '/data/rick/pretrained_weights/Instruct_blip/'
+    base_model = "blip2" # ['instructblip' , 'blip2' ]
+    blip_model = "OPT6.7B" # ["vicuna-7B", "OPT2.7B COCO", "OPT6.7B COCO",] 
+    cache_dir = '/data/rick/pretrained_weights/BLIP2/'
     if not os.path.exists(cache_dir):
         os.makedirs(cache_dir)
     load_bit=4
@@ -112,14 +122,14 @@ if __name__ == "__main__":
 
     img_path_List = []
     img_path = "/data/kinan/driving_assistant/Driving_Assistant/other_test_images/4cam_tests/LINE_ALBUM_AttractionPlaceTesting_230707_15.jpg"
-    img_path_List.append(img_path)
+    [img_path_List.append(img_path) for i in range(6)]
 
     instruction_input_List = []
     instruction_input = make_instruction_input(direction='left')
-
+    
     # instruction_input = make_instruction_input(driver_question='How can I get to my destination faster?', 
     #                                            direction='left')
-    instruction_input_List.append(instruction_input)
+    [instruction_input_List.append(instruction_input) for i in range(6)]
     
     print("BLIP response:\n")
     main(img_path_List,

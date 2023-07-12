@@ -50,7 +50,7 @@ BLIP_max_length_token_output=100
 
 
 ##***************************************************************************************************
-##  Section 2  onstruct Instruction Input from GPT and Instruction Responese from BLIP --> Suggestions & Solution from GPT -----------------
+##  Section 2  Construct Instruction Input from GPT and Instruction Responese from BLIP --> Suggestions & Solution from GPT -----------------
 ##***************************************************************************************************
   
 
@@ -66,13 +66,14 @@ VALID_GPT3_MODELS = ['text-davinci-003', 'text-davinci-002', 'davinci']
 
 ## 1.1 Setting Prompt to GPTs Model to Create Instruction input for Blip2 or InstructBLIP
 
-input_INSTRUCTION = \
-"I have an image. " \
-"Ask me questions about the content of this image related to Driving Domain, the information providing is related to street views information. " \
-"Carefully asking me informative questions to maximize your information about this image content. " \
-"Each time ask one question only without giving an answer. " \
-"Avoid asking many yes/no questions." \
-"I'll put my answer beginning with \"Answer:\"." \
+# input_INSTRUCTION = \
+# "I have an image from the camera of a car. " \
+# "Please ask me informative questions about the content of this image to maximize the information you receive. "\
+# "Ask me questions related to the Driving Domain, specifically driving safety, tips, and information about the surroundings. " \
+# "Each time, ask only one question without providing an answer. " \
+# "Avoid asking many yes/no questions. " \
+# "I will provide my response starting with 'Answer:'. " \
+
 
 target_topic_instruction = "In this task, I have an image related to the driving domain, specifically street view information. I would like you to ask me informative questions about the content of this image based on the following topics domains to let my vision language model to answer the question :\n\n1. Object Detection & Recognition:\n1.1 Lane Detection and Lane Keeping:\n    - Identifying and tracking road lanes\n    - Lane marking classification (e.g., solid lines, dashed lines, arrows)\n    - Lane keeping assistance to ensure the vehicle stays within the lanes\n\n1.2 Pedestrian Detection & Tracking:\n    - Handling challenges such as occlusion, varying poses, and crowded scenarios\n    - Predicting pedestrian intentions for better interaction with autonomous vehicles\n\n1.3 Vehicles Detection:\n    - Detecting and recognizing cars, trucks, motorcycles, bicycles, etc.\n    - Handling varying scales, viewpoints, and occlusions in vehicle detection\n\n1.4 Traffic Sign Detection and Recognition:\n    - Localizing and recognizing traffic signs\n    - Understanding the state of traffic lights (e.g., red, green, yellow)\n    - Interpreting traffic sign meanings (e.g., speed limits, yield, no entry)\n\n1.5 Other Objects in Street View Images:\n    - Detecting and recognizing other objects present in street view images\n\n2. Road Scene Understanding & Event Detection:\n2.1 Road Event Detection:\n    - Detecting and recognizing different events on the road (e.g., road closures, construction, accidents, roadblocks)\n\n2.2 Road Anomaly Detection:\n    - Detecting and recognizing unusual or anomalous objects or situations on the road\n    - Identifying breakdowns, abnormal road conditions, etc.\n    - Providing early warning systems for nearby vehicles and authorities\n\n2.3 Road Condition Detection:\n    - Estimating road surface conditions (e.g., wet, icy, potholes) from visual street view images\n    - Monitoring road surface conditions for maintenance and safety purposes\n\n2.4 Road Safety Condition:\n    - Detecting and recognizing crosswalks and pedestrian zones in street view images\n    - Assessing pedestrian safety and identifying potential hazards\n\n3. Driving Weather and Driving Condition State:\n3.1 Detecting Weather Condition:\n    - Identifying weather conditions such as foggy, snowy, sunny, rainy, etc.\n\n3.2 Detecting the Day State:\n    - Assessing the lighting conditions during the day (e.g., low light, well visible, dark)\n\nEach time, please ask me one question related to the selected topic without providing the answer. Avoid asking many yes/no questions. I will provide the answer to each question starting with 'Answer:'. Feel free to ask as many questions as you need to maximize your understanding of the image content."
 ## Testing case
@@ -85,11 +86,19 @@ sub_INSTRUCTION = \
 
 ## 1.2 Setting Prompt for GPTs Model Provide the Advice and Suggestion 
 
+
 solution_INSTRUCTION = \
-'Now summarize the information you get from abstract visual information. ' \
-'Based on the summarize information, you are a helpful assistant please provide some suggestions, advices and other assistance to Driver. ' \
-'Don\'t add information. Don\'t miss information. \n' \
-'Summary: '
+'This is a description of what can be seen through the cameras of a car.' \
+'You are a helpful driving assistant. ' \
+'First, summarize the information provided. ' \
+'Then, provide a suggestion, advice, warning, or other assistance to the driver based on the information. ' \
+'Response: '
+
+# solution_INSTRUCTION = \
+# 'Now summarize the information you get from abstract visual information. ' \
+# 'Based on the summarize information, you are a helpful assistant please provide some suggestions, advices and other assistance to Driver. ' \
+# 'Don\'t add information. Don\'t miss information. \n' \
+# 'Summary: '
 
 
 ANSWER_INSTRUCTION = 'Answer given questions. If you are not sure about the answer, say you don\'t know honestly. Don\'t imagine any contents that are not in the image.'
@@ -188,6 +197,57 @@ def generate(blip, image, GPT_model, n_rounds=10, n_blip2_context=-1, print_mode
     return visual_instruction_data
 
 
+def generate_multiview(blip, images, GPT_model, n_rounds=10, n_blip2_context=-1, print_mode='chat', BLIP_max_length_token_output=100, BLIP_llm_decoding_strategy='nucleus'):
+    '''
+    Caption a set of multiview images
+
+    Combines the responses of LLM to each direction's image to make a final suggestion to the driver.
+
+    Args:
+        images: a dictionary of {direction: image}. direction is the direction of the image. image is the PIL image
+    
+    '''
+    if GPT_model == 'gpt3':
+        GPT_model = 'text-davinci-003'
+    elif GPT_model == 'chatgpt':
+        GPT_model = 'gpt-35-turbo'
+
+    out = {}
+    for direction, image in images.items():
+
+        visual_instruction_data = visual_instruction_input_response(blip=blip, 
+                                            image=image, 
+                                            GPT_model=GPT_model,
+                                            n_rounds=n_rounds, 
+                                            n_blip2_context=n_blip2_context, 
+                                            print_mode=print_mode, 
+                                            BLIP_llm_decoding_strategy=BLIP_llm_decoding_strategy, 
+                                            BLIP_max_length_token_output=BLIP_max_length_token_output, 
+                                            )
+        out[direction] = visual_instruction_data
+    
+    ## Combine the responses of LLM to each direction's image to make a final suggestion to the driver.
+    combined_information = ''
+    for direction, visual_instruction_data in out.items():
+        combined_information += f'{direction} side camera:\n'
+        combined_information += visual_instruction_data['Visual_instruction']['instruction_input_recsponse_suggestion'] + '\n\n'
+
+
+    final_suggestion_prompt = combined_information + \
+        'Above is your combined information and suggestions from all directions of the car. \
+        Based on this information, give a final suggestion, warning, advice, or other assistance to the driver. \
+        Response: '
+    
+    print('Final suggestion prompt: ')
+    print(final_suggestion_prompt)
+
+    if GPT_model == 'text-davinci-003':
+        final_suggestion = call_gpt3(final_suggestion_prompt, GPT_model, max_token=100)
+    elif GPT_model == 'gpt-35-turbo':
+        final_suggestion = call_chatgpt(final_suggestion_prompt, GPT_model, max_token=100)
+    
+    return final_suggestion
+
 def main(args): 
     if args.datasets == 'cityscape':
         ## ------------ Loading the Dataset -----------------
@@ -249,8 +309,60 @@ def main(args):
         with open(save_name, 'w') as f:
             json.dump(instruction_input_output, f)
 
-    else: 
-         raise NotImplementedError('Dataset {} is currently not supported.'.format(args.datasets))
+    elif args.datasets == 'multiview':
+        # Any dataset with images of multiple directions of the car
+        # Assumed structure:
+        # dataset = [{'left': Image, 'right': Image, 'front': Image, 'back': Image, 
+        #             'label': label, 'name': name}, ...]
+
+        img_size= 480 # Resize Corresponding Original Image Shape if transform is None
+
+        ## If we want to Resize to Square 
+        transform = transforms.Compose([
+            transforms.Resize((256, 256)),
+            transforms.ToTensor(),
+            # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]), #mageNet normalization
+            ## convert back to PIL image
+            transforms.ToPILImage()
+            ])
+        
+        blip = get_blip_model(base_model=args.blip_type_model, blip_model=args.blip_LLM , cache_dir=args.cache_dir, load_bit=args.blip_load_bit)
+        
+        instruction_input_output=[]
+        for i, (image_and_lable, img_names) in enumerate(dataset):
+            # do something with the image and label, for example print their shapes
+            image= image_and_lable[0]
+            label= image_and_lable[1]
+            print(f"Image shape: {image.size}, Segment Label shape: {label.size}")
+            # label.save(f'./cityscape_test_imgs/test_segment_{i}.png')
+            # image.save(f'./cityscape_test_imgs/gtfine_test_image_{i}.png')
+            name= img_names[i]
+            name_start = str(name).find("/cityscape_synthetic/")
+            image_path = name[0][name_start-1:]
+            #images_names.append(image_path) 
+
+            ## Generate Visual Instruction Dataset
+            visual_instruction_data= generate(blip, image, args.gpt_model, 
+                                               n_rounds=10,
+                                               n_blip2_context=args.n_blip2_context,
+                                               print_mode=args.chat_mode, 
+                                               BLIP_max_length_token_output=args.bli2_max_lenght_token_gen, 
+                                               BLIP_llm_decoding_strategy=args.blip2_llm_decoding_strategy
+                                               )
+            
+            image_input_output={'image_name': image_path, 'visual_instruction_data': visual_instruction_data}
+            instruction_input_output.append(image_input_output)
+            
+            
+            if i==20: 
+                break
+
+        
+        save_name= os.path.join(args.save_path, 'visual_instruction_data_blip2_vicuna_13B_gpt4_20_img.json')
+        with open(save_name, 'w') as f:
+            json.dump(instruction_input_output, f)
+    else:
+        raise NotImplementedError('Dataset {} is currently not supported.'.format(args.datasets))
       
 
 if __name__ == '__main__':
