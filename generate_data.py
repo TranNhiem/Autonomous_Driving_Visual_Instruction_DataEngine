@@ -163,7 +163,6 @@ def visual_instruction_input_response(blip, image, GPT_model, n_rounds=10, max_g
     
     return results
 
-
 def generate(blip, image, GPT_model, n_rounds=10, n_blip2_context=-1, print_mode='chat', BLIP_max_length_token_output=100, BLIP_llm_decoding_strategy='nucleus'):
     """
     Caption images with a set of blip2 models
@@ -195,7 +194,6 @@ def generate(blip, image, GPT_model, n_rounds=10, n_blip2_context=-1, print_mode
                                         )
 
     return visual_instruction_data
-
 
 def generate_multiview(blip, images, GPT_model, n_rounds=10, n_blip2_context=-1, print_mode='chat', BLIP_max_length_token_output=100, BLIP_llm_decoding_strategy='nucleus'):
     '''
