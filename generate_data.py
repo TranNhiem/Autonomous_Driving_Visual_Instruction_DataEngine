@@ -290,7 +290,7 @@ def main(args):
 
             ## Generate Visual Instruction Dataset
             visual_instruction_data= generate(blip, image, args.gpt_model, 
-                                               n_rounds=10,
+                                               n_rounds=args.n_rounds,
                                                n_blip2_context=args.n_blip2_context,
                                                print_mode=args.chat_mode, 
                                                BLIP_max_length_token_output=args.bli2_max_lenght_token_gen, 
@@ -301,11 +301,11 @@ def main(args):
             instruction_input_output.append(image_input_output)
             
             
-            if i==20: 
+            if i==5: 
                 break
 
         
-        save_name= os.path.join(args.save_path, 'testing_visual_instruction_data_blip2_vicuna_13B_gpt4_20_img.json')
+        save_name= os.path.join(args.save_path, 'testing_visual_instruction_data_blip2_vicuna_13B_gpt4_5_gptcache_img.json')
         with open(save_name, 'w') as f:
             json.dump(instruction_input_output, f)
 

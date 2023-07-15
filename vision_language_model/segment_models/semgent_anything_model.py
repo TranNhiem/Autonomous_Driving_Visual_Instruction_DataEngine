@@ -1,6 +1,20 @@
 import cv2
 from segment_anything import SamAutomaticMaskGenerator, sam_model_registry
-from utils.util import resize_long_edge_cv2
+
+def resize_long_edge_cv2(image, target_size=384):
+    height, width = image.shape[:2]
+    aspect_ratio = float(width) / float(height)
+
+    if height > width:
+        new_height = target_size
+        new_width = int(target_size * aspect_ratio)
+    else:
+        new_width = target_size
+        new_height = int(target_size / aspect_ratio)
+
+    resized_image = cv2.resize(image, (new_width, new_height), interpolation=cv2.INTER_AREA)
+    return resized_image
+
 
 class SegmentAnything:
     def __init__(self, device, arch="vit_b"):

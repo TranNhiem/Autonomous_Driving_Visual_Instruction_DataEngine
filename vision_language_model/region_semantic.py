@@ -62,3 +62,4 @@ class RegionSemantic():
 
 if __name__ == '__main__':
     ## This testing image 
+    print("Testing image: ")

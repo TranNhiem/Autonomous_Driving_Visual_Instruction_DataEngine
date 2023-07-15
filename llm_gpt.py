@@ -19,6 +19,12 @@ from tenacity import (
 )  
 import backoff # for exponential backoff
 
+# ## Efficient OpenAI Request 
+# from gptcache import cache
+# from gptcache.adapter import openai
+
+# cache.init()
+# cache.set_openai_key() 
 
 #***************  Section 1 GPTs model to Create Prompt *****************#
 
@@ -53,7 +59,6 @@ def call_gpt3(gpt3_prompt, max_tokens=40, model="text-davinci-003"):  # 'text-cu
     total_tokens = response['usage']['total_tokens']
     return reply, total_tokens
 
-
 @retry(wait=wait_random_exponential(min=1, max=60), stop=stop_after_attempt(10))
 def call_chatgpt(chatgpt_messages, max_tokens=40, model="gpt-35-turbo"):
     response = openai.ChatCompletion.create(engine=model, messages=chatgpt_messages,#[chatgpt_messages],
@@ -67,7 +72,6 @@ def call_chatgpt(chatgpt_messages, max_tokens=40, model="gpt-35-turbo"):
     total_tokens = response['usage']['total_tokens']
     return reply, total_tokens
 
-
 ## Building Multiple Input Prompt to Maximizing the Information 
 def prepare_chatgpt_message(task_prompt, questions, answers, sub_prompt):
     messages = [{"role": "system", "content": task_prompt}]
@@ -80,7 +84,6 @@ def prepare_chatgpt_message(task_prompt, questions, answers, sub_prompt):
     messages.append({"role": "system", "content": sub_prompt})
     
     return messages
-
 
 def get_chat_log(questions, answers, last_n=-1):
     n_addition_q = len(questions) - len(answers)
@@ -101,8 +104,6 @@ def get_chat_log(questions, answers, last_n=-1):
     else:
         chat_log = chat_log[:-2]  # remove the last '/n'
     return chat_log
-
-
 
 class Generate_instruction_Input_output():
     

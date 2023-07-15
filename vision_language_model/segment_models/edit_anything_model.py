@@ -3,9 +3,22 @@ import torch
 import mmcv
 import numpy as np
 from PIL import Image
-from utils.util import resize_long_edge
+
 from concurrent.futures import ThreadPoolExecutor
 import time
+def resize_long_edge_cv2(image, target_size=384):
+    height, width = image.shape[:2]
+    aspect_ratio = float(width) / float(height)
+
+    if height > width:
+        new_height = target_size
+        new_width = int(target_size * aspect_ratio)
+    else:
+        new_width = target_size
+        new_height = int(target_size / aspect_ratio)
+
+    resized_image = cv2.resize(image, (new_width, new_height), interpolation=cv2.INTER_AREA)
+    return resized_image
 
 class EditAnything:
     def __init__(self, image_caption_model):
@@ -58,5 +71,5 @@ class EditAnything:
 
     def semantic_class_w_mask(self, img_src, anns):
         image = Image.open(img_src)
-        image = resize_long_edge(image, 384)
+        image = resize_long_edge_cv2(image, 384)
         return self.region_level_semantic_api(image, anns)
