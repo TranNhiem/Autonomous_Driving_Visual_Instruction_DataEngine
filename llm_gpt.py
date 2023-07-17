@@ -191,14 +191,17 @@ class Generate_instruction_Input_output():
         
         return question
 
-    def answer_question(self, decoding_strategy="nucleus", max_length=100):
+    def answer_question(self, decoding_strategy="nucleus", max_length=100, min_length=50):
         # prepare the context for blip2
         blip2_prompt = '\n'.join([self.ANSWER_INSTRUCTION,
                                   get_chat_log(self.questions, self.answers, last_n=self.n_blip2_context),
                                   self.SUB_ANSWER_INSTRUCTION])
 
-        answer = self.blip2.abstract_visual_output(self.img, blip2_prompt,llm_decoding_strategy=decoding_strategy,max_length=max_length) 
-        if self.debug:
+        answer = self.blip2.abstract_visual_output(self.img, blip2_prompt,
+                                                   llm_decoding_strategy=decoding_strategy,
+                                                   max_length=max_length, min_length=min_length) 
+        if True:
+        # if self.debug:
             print("Answer:", answer)
         return answer
 
@@ -207,7 +210,7 @@ class Generate_instruction_Input_output():
         return answer
 
     
-    def chatting(self, n_rounds, print_mode, BLIP_llm_decoding_strategy="nucleus", BLIP_max_length_token_output=100):
+    def chatting(self, n_rounds, print_mode, BLIP_llm_decoding_strategy="nucleus", BLIP_max_length_token_output=100, BLIP_min_length_token_output=50):
         
         if print_mode == 'chat':
             print('-------- Instruction Input & Response ----------')
@@ -222,7 +225,7 @@ class Generate_instruction_Input_output():
                 #print('GPT: {}'.format(question))
                 print(f"Model: {self.model}, question: {question}")
 
-            answer = self.answer_question(decoding_strategy=BLIP_llm_decoding_strategy, max_length=BLIP_max_length_token_output)
+            answer = self.answer_question(decoding_strategy=BLIP_llm_decoding_strategy, max_length=BLIP_max_length_token_output, min_length=BLIP_min_length_token_output)
             answer = self.answer_trim(answer)
             self.answers.append(answer)
 

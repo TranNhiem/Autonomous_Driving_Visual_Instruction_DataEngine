@@ -121,7 +121,7 @@ class Viusal_Understanding():
 
         return processor, model
 
-    def abstract_visual_output(self, raw_image, instruction_input, llm_decoding_strategy="nucleus", max_length=512):
+    def abstract_visual_output(self, raw_image, instruction_input, llm_decoding_strategy="nucleus", max_length=100, min_length=50):
         inputs = self.processor(raw_image, instruction_input, return_tensors="pt").to(self.device, torch.float16)
         
         # for key in inputs:
@@ -143,7 +143,8 @@ class Viusal_Understanding():
                                       top_p=0.95, 
                                       top_k=0, 
                                       repetition_penalty=1.5,
-                                      length_penalty=1.0,)
+                                      length_penalty=1.0,
+                                      min_length=min_length,)
         
         elif llm_decoding_strategy =="contrastive_search": 
             out = self.model.generate(**inputs, max_length=max_length, penalty_alpha=0.6, top_k=6, repetition_penalty=1.5,)

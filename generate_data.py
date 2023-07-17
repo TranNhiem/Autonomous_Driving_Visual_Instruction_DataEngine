@@ -47,7 +47,7 @@ def get_blip_model(base_model="blip2", blip_model="OPT2.7B COCO" , cache_dir="/m
 ## Some Default Parameters FOR BLIP llm Model
 BLIP_llm_decoding_strategy="nucleus"
 BLIP_max_length_token_output=100 
-
+BLIP_min_length_token_output=50
 
 ##***************************************************************************************************
 ##  Section 2  Construct Instruction Input from GPT and Instruction Responese from BLIP --> Suggestions & Solution from GPT -----------------
@@ -75,7 +75,21 @@ VALID_GPT3_MODELS = ['text-davinci-003', 'text-davinci-002', 'davinci']
 # "I will provide my response starting with 'Answer:'. " \
 
 
-target_topic_instruction = "In this task, I have an image related to the driving domain, specifically street view information. I would like you to ask me informative questions about the content of this image based on the following topics and domains:\n\n1. Object Detection & Recognition:\n1.1 Lane Detection and Lane Keeping:\n    - Identifying and tracking road lanes\n    - Lane marking classification (e.g., solid lines, dashed lines, arrows)\n    - Lane keeping assistance to ensure the vehicle stays within the lanes\n\n1.2 Pedestrian Detection & Tracking:\n    - Handling challenges such as occlusion, varying poses, and crowded scenarios\n    - Predicting pedestrian intentions for better interaction with autonomous vehicles\n\n1.3 Vehicles Detection:\n    - Detecting and recognizing cars, trucks, motorcycles, bicycles, etc.\n    - Handling varying scales, viewpoints, and occlusions in vehicle detection\n\n1.4 Traffic Sign Detection and Recognition:\n    - Localizing and recognizing traffic signs\n    - Understanding the state of traffic lights (e.g., red, green, yellow)\n    - Interpreting traffic sign meanings (e.g., speed limits, yield, no entry)\n\n1.5 Other Objects in Street View Images:\n    - Detecting and recognizing other objects present in street view images\n\n2. Road Scene Understanding & Event Detection:\n2.1 Road Event Detection:\n    - Detecting and recognizing different events on the road (e.g., road closures, construction, accidents, roadblocks)\n\n2.2 Road Anomaly Detection:\n    - Detecting and recognizing unusual or anomalous objects or situations on the road\n    - Identifying breakdowns, abnormal road conditions, etc.\n    - Providing early warning systems for nearby vehicles and authorities\n\n2.3 Road Condition Detection:\n    - Estimating road surface conditions (e.g., wet, icy, potholes) from visual street view images\n    - Monitoring road surface conditions for maintenance and safety purposes\n\n2.4 Road Safety Condition:\n    - Detecting and recognizing crosswalks and pedestrian zones in street view images\n    - Assessing pedestrian safety and identifying potential hazards\n\n3. Driving Weather and Driving Condition State:\n3.1 Detecting Weather Condition:\n    - Identifying weather conditions such as foggy, snowy, sunny, rainy, etc.\n\n3.2 Detecting the Day State:\n    - Assessing the lighting conditions during the day (e.g., low light, well visible, dark)\n\nEach time, please ask me one question related to the selected topic without providing the answer. Avoid asking many yes/no questions. I will provide the answer to each question starting with 'Answer:'. Feel free to ask as many questions as you need to maximize your understanding of the image content."
+target_topic_instruction = \
+    "In this task, I have an image from the camera of a car. \
+    We need to extract information from this image to help give the driver of the car helpful information. \
+    I would like you to ask me informative questions about the content of this image. \
+    Avoid asking many yes/no questions. I will provide the answer to each question starting with 'Answer:'. \
+    Feel free to ask as many questions as you need to maximize your understanding of the image content. "
+
+# target_topic_instruction = \
+#     "In this task, I have an image from the camera of a car. \
+#     We need to extract information from this image to help give the driver of the car helpful information. \
+#     I would like you to ask me informative questions about the content of this image based on the following topics and domains:\n\n\
+#     1. Object Detection & Recognition:\n1.1 Lane Detection and Lane Keeping:\n    - Identifying and tracking road lanes\n    - Lane marking classification (e.g., solid lines, dashed lines, arrows)\n    - Lane keeping assistance to ensure the vehicle stays within the lanes\n\n1.2 Pedestrian Detection & Tracking:\n    - Handling challenges such as occlusion, varying poses, and crowded scenarios\n    - Predicting pedestrian intentions for better interaction with autonomous vehicles\n\n1.3 Vehicles Detection:\n    - Detecting and recognizing cars, trucks, motorcycles, bicycles, etc.\n    - Handling varying scales, viewpoints, and occlusions in vehicle detection\n\n1.4 Traffic Sign Detection and Recognition:\n    - Localizing and recognizing traffic signs\n    - Understanding the state of traffic lights (e.g., red, green, yellow)\n    - Interpreting traffic sign meanings (e.g., speed limits, yield, no entry)\n\n1.5 Other Objects in Street View Images:\n    - Detecting and recognizing other objects present in street view images\n\n2. Road Scene Understanding & Event Detection:\n2.1 Road Event Detection:\n    - Detecting and recognizing different events on the road (e.g., road closures, construction, accidents, roadblocks)\n\n2.2 Road Anomaly Detection:\n    - Detecting and recognizing unusual or anomalous objects or situations on the road\n    - Identifying breakdowns, abnormal road conditions, etc.\n    - Providing early warning systems for nearby vehicles and authorities\n\n2.3 Road Condition Detection:\n    - Estimating road surface conditions (e.g., wet, icy, potholes) from visual street view images\n    - Monitoring road surface conditions for maintenance and safety purposes\n\n2.4 Road Safety Condition:\n    - Detecting and recognizing crosswalks and pedestrian zones in street view images\n    - Assessing pedestrian safety and identifying potential hazards\n\n3. Driving Weather and Driving Condition State:\n3.1 Detecting Weather Condition:\n    - Identifying weather conditions such as foggy, snowy, sunny, rainy, etc.\n\n3.2 Detecting the Day State:\n    - Assessing the lighting conditions during the day (e.g., low light, well visible, dark)\n\n\
+#     Each time, please ask me one question about the image. \
+#     Avoid asking many yes/no questions. I will provide the answer to each question starting with 'Answer:'. \
+#     Feel free to ask as many questions as you need to maximize your understanding of the image content. "
 ## Testing case
 input_INSTRUCTION=target_topic_instruction
 
@@ -132,7 +146,10 @@ def summarize_and_suggestion(questions, answers, model, max_gpt_token=100):
     return summary, summary_prompt, n_tokens
 
 
-def visual_instruction_input_response(blip, image, GPT_model, n_rounds=10, max_gpt_token=100, n_blip2_context=-1, print_mode='chat', BLIP_llm_decoding_strategy="nucleus", BLIP_max_length_token_output=100):
+def visual_instruction_input_response(blip, image, GPT_model, 
+                                      n_rounds=10, max_gpt_token=100, n_blip2_context=-1, 
+                                      print_mode='chat', BLIP_llm_decoding_strategy="nucleus", 
+                                      BLIP_max_length_token_output=100, BLIP_min_length_token_output=50):
     
 
     
@@ -148,7 +165,8 @@ def visual_instruction_input_response(blip, image, GPT_model, n_rounds=10, max_g
 
     questions, answers, n_token_chat = instruction_input_output.chatting(n_rounds, print_mode=print_mode, 
                                                                          BLIP_llm_decoding_strategy=BLIP_llm_decoding_strategy, 
-                                                                         BLIP_max_length_token_output=BLIP_max_length_token_output)
+                                                                         BLIP_max_length_token_output=BLIP_max_length_token_output,
+                                                                         BLIP_min_length_token_output=BLIP_min_length_token_output)
 
     summary, summary_prompt, n_token_sum = summarize_and_suggestion(questions, answers, model=GPT_model)
 
@@ -164,7 +182,12 @@ def visual_instruction_input_response(blip, image, GPT_model, n_rounds=10, max_g
     return results
 
 
-def generate(blip, image, GPT_model, n_rounds=10, n_blip2_context=-1, print_mode='chat', BLIP_max_length_token_output=100, BLIP_llm_decoding_strategy='nucleus'):
+def generate(blip, image, GPT_model, n_rounds=10, 
+             n_blip2_context=-1, print_mode='chat', 
+             BLIP_max_length_token_output=100,
+             BLIP_min_length_token_output=50, 
+             BLIP_llm_decoding_strategy='nucleus',
+             ):
     """
     Caption images with a set of blip2 models
 
@@ -191,13 +214,14 @@ def generate(blip, image, GPT_model, n_rounds=10, n_blip2_context=-1, print_mode
                                         n_blip2_context=n_blip2_context, 
                                         print_mode=print_mode, 
                                         BLIP_llm_decoding_strategy=BLIP_llm_decoding_strategy, 
-                                        BLIP_max_length_token_output=BLIP_max_length_token_output, 
+                                        BLIP_max_length_token_output=BLIP_max_length_token_output,
+                                        BLIP_min_length_token_output=BLIP_min_length_token_output, 
                                         )
 
     return visual_instruction_data
 
 
-def generate_multiview(blip, images, GPT_model, n_rounds=10, n_blip2_context=-1, print_mode='chat', BLIP_max_length_token_output=100, BLIP_llm_decoding_strategy='nucleus'):
+def generate_multiview(blip, images, GPT_model, n_rounds=10, n_blip2_context=-1, print_mode='chat', BLIP_max_length_token_output=100, BLIP_min_length_token_output=50, BLIP_llm_decoding_strategy='nucleus'):
     '''
     Caption a set of multiview images
 
@@ -222,7 +246,8 @@ def generate_multiview(blip, images, GPT_model, n_rounds=10, n_blip2_context=-1,
                                             n_blip2_context=n_blip2_context, 
                                             print_mode=print_mode, 
                                             BLIP_llm_decoding_strategy=BLIP_llm_decoding_strategy, 
-                                            BLIP_max_length_token_output=BLIP_max_length_token_output, 
+                                            BLIP_max_length_token_output=BLIP_max_length_token_output,
+                                            BLIP_min_length_token_output=BLIP_min_length_token_output, 
                                             )
         out[direction] = visual_instruction_data
     
@@ -293,7 +318,8 @@ def main(args):
                                                n_rounds=10,
                                                n_blip2_context=args.n_blip2_context,
                                                print_mode=args.chat_mode, 
-                                               BLIP_max_length_token_output=args.bli2_max_lenght_token_gen, 
+                                               BLIP_max_length_token_output=args.blip2_max_length_token_gen,
+                                               BLIP_min_length_token_output=args.blip2_min_length_token_gen, 
                                                BLIP_llm_decoding_strategy=args.blip2_llm_decoding_strategy
                                                )
             
@@ -301,7 +327,7 @@ def main(args):
             instruction_input_output.append(image_input_output)
             
             
-            if i==20: 
+            if i==5: 
                 break
 
         
@@ -336,9 +362,11 @@ if __name__ == '__main__':
                             help='Number of QA rounds visible to BLIP-2. Default is 1, which means BLIP-2 only remember one previous question. -1 means BLIP-2 can see all the QA rounds')
         parser.add_argument('--blip2_llm_decoding_strategy', type=str, default='contrastive_search',choices=['beam_search', 'nucleus', 'contrastive_search'], 
                             help='Decoding strategy for BLIP-2 LLM. Default is nucleus sampling.')
-        parser.add_argument('--bli2_max_lenght_token_gen', type=int, default=100, 
+        parser.add_argument('--blip2_max_length_token_gen', type=int, default=100, 
                             help='Max length of tokens generated by BLIP-2 LLM. Default is 100.')
-      
+        parser.add_argument('--blip2_min_length_token_gen', type=int, default=50, 
+                            help='Min length of tokens generated by BLIP-2 LLM. Default is 50.')
+        
         parser.add_argument('--n_rounds', type=int, default=10, 
                             help='Number of QA rounds between GPT and BLIP. Default is 10, which costs about 3k tokens in GPT API.')
         parser.add_argument('--chat_mode', type=str, default="chat", choices=['chat', 'no'],
