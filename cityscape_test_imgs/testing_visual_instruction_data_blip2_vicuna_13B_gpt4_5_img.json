@@ -1,0 +1,614 @@
+[
+    {
+        "image_name": "ng",
+        "visual_instruction_data": {
+            "Visual_instruction": {
+                "instruction_input_recsponse_suggestion": "The image shows a 1920s car on a two-lane street with solid lines. There are other vehicles, including motorcycles parked nearby. Two pedestrians are present, walking towards the motorcycles. A traffic sign indicates the end of Main Street, with arrows pointing to each side to indicate drivers should turn around at this point. The weather is sunny.  Suggestions for the driver: 1. Be cautious and vigilant while driving in this historical area as there might be pedestrians and vintage cars around. 2. Pay",
+                "each_input_response": [
+                    {
+                        "role": "system",
+                        "content": "In this task, I have an image related to the driving domain, specifically street view information. I would like you to ask me informative questions about the content of this image based on the following topics domains to let my vision language model to answer the question :\n\n1. Object Detection & Recognition:\n1.1 Lane Detection and Lane Keeping:\n    - Identifying and tracking road lanes\n    - Lane marking classification (e.g., solid lines, dashed lines, arrows)\n    - Lane keeping assistance to ensure the vehicle stays within the lanes\n\n1.2 Pedestrian Detection & Tracking:\n    - Handling challenges such as occlusion, varying poses, and crowded scenarios\n    - Predicting pedestrian intentions for better interaction with autonomous vehicles\n\n1.3 Vehicles Detection:\n    - Detecting and recognizing cars, trucks, motorcycles, bicycles, etc.\n    - Handling varying scales, viewpoints, and occlusions in vehicle detection\n\n1.4 Traffic Sign Detection and Recognition:\n    - Localizing and recognizing traffic signs\n    - Understanding the state of traffic lights (e.g., red, green, yellow)\n    - Interpreting traffic sign meanings (e.g., speed limits, yield, no entry)\n\n1.5 Other Objects in Street View Images:\n    - Detecting and recognizing other objects present in street view images\n\n2. Road Scene Understanding & Event Detection:\n2.1 Road Event Detection:\n    - Detecting and recognizing different events on the road (e.g., road closures, construction, accidents, roadblocks)\n\n2.2 Road Anomaly Detection:\n    - Detecting and recognizing unusual or anomalous objects or situations on the road\n    - Identifying breakdowns, abnormal road conditions, etc.\n    - Providing early warning systems for nearby vehicles and authorities\n\n2.3 Road Condition Detection:\n    - Estimating road surface conditions (e.g., wet, icy, potholes) from visual street view images\n    - Monitoring road surface conditions for maintenance and safety purposes\n\n2.4 Road Safety Condition:\n    - Detecting and recognizing crosswalks and pedestrian zones in street view images\n    - Assessing pedestrian safety and identifying potential hazards\n\n3. Driving Weather and Driving Condition State:\n3.1 Detecting Weather Condition:\n    - Identifying weather conditions such as foggy, snowy, sunny, rainy, etc.\n\n3.2 Detecting the Day State:\n    - Assessing the lighting conditions during the day (e.g., low light, well visible, dark)\n\nEach time, please ask me one question related to the selected topic without providing the answer. Avoid asking many yes/no questions. I will provide the answer to each question starting with 'Answer:'. Feel free to ask as many questions as you need to maximize your understanding of the image content."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Describe this image in detail."
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 1920s car on the street"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: What type of lane markings are visible on the road in the image?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 2 lanes"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are the lane markings solid lines, dashed lines, or a combination of both?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 2 lanes"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any pedestrians visible in the image? If so, how many and what are they doing?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 2"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: What are the two pedestrians doing in the image? Are they walking, standing, or interacting with the 1920s car?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 2"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Can you describe the actions or poses of the two pedestrians in the image?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 1"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any other vehicles besides the 1920s car in the image? If so, what types of vehicles are they?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 2  Yes, there are other vehicles besides the vintage car in this image. They appear to be motorcycles parked on a curb next tot he sidewalk and walking towards them is one of two pedestrians you see at street level as they're strolling down an alley that leads from Main Street (Rue Principale) into Old Town Lunenburg Nova Scotia CANADA during their vacation or holiday visiting historic"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any traffic signs or traffic lights visible in the image? If so, please describe their types and meanings."
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 1 Image Text & Explanation: Yes, there is a traffic sign visible in the image. It's an \"End of Main Street\" or terminus/dead-end road marker with arrows pointing to each side indicating that vehicles cannot proceed further and must turn around at this point when traveling down Rue Principale (Main St.). This type of sign alerts drivers not only about upcoming intersections but also warns them against continuously driving straight ahead"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any notable road conditions or anomalies in the image, such as potholes, wet surfaces, or construction zones?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 2 Image Text & Explanation: No, there are no notable road conditions or anomalies that can be inferred from the image. However, it is possible to see a street in front of an old building with people walking on its sidewalks and parking spots for motorcycles next-door at 1 o'clock positioned near park benches underneath shade umbrellas outside cafes/restaurants along Rue Principale"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Based on the image, can you determine the weather condition at the time it was taken? Is it sunny, cloudy, rainy, or foggy?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 1 Yes, I can infer that the weather condition depicted in this image is sunny. This conclusion arises from observing several factors: * The presence of blue skies visible above and behind buildings indicates clear atmospheric conditions unobstructed by clouds or precipitation droplets (either rainwater falling vertically downward to form raindrops on ground level during a thunderstorm cloud cover). \ufffd\ufffd\ufffdazure\u2600\ufe0f\ufffd\ufffd"
+                    },
+                    {
+                        "role": "system",
+                        "content": "Now summarize the information you get from abstract visual information. Based on the summarize information, you are a helpful assistant please provide some suggestions, advices and other assistance to Driver. Don't add information. Don't miss information. \nSummary: "
+                    }
+                ],
+                "n_token": 8732
+            },
+            "BLIP_short_captioning": {
+                "image_caption": "a street with people walking on it in the city"
+            }
+        }
+    },
+    {
+        "image_name": "ng",
+        "visual_instruction_data": {
+            "Visual_instruction": {
+                "instruction_input_recsponse_suggestion": "Summary: The image shows a 1980's car on a two-lane road with two solid lines marking the lanes. There are two trucks visible, one in front of the other. A pedestrian is not visible in the image. There are traffic lights at an intersection, with one red light and two green lights. A crosswalk controlled by a flashing red light during rush hour is also present at this intersection.  Suggestions and Advice for Driver: 1. Keep an eye on the traffic lights to ensure",
+                "each_input_response": [
+                    {
+                        "role": "system",
+                        "content": "In this task, I have an image related to the driving domain, specifically street view information. I would like you to ask me informative questions about the content of this image based on the following topics domains to let my vision language model to answer the question :\n\n1. Object Detection & Recognition:\n1.1 Lane Detection and Lane Keeping:\n    - Identifying and tracking road lanes\n    - Lane marking classification (e.g., solid lines, dashed lines, arrows)\n    - Lane keeping assistance to ensure the vehicle stays within the lanes\n\n1.2 Pedestrian Detection & Tracking:\n    - Handling challenges such as occlusion, varying poses, and crowded scenarios\n    - Predicting pedestrian intentions for better interaction with autonomous vehicles\n\n1.3 Vehicles Detection:\n    - Detecting and recognizing cars, trucks, motorcycles, bicycles, etc.\n    - Handling varying scales, viewpoints, and occlusions in vehicle detection\n\n1.4 Traffic Sign Detection and Recognition:\n    - Localizing and recognizing traffic signs\n    - Understanding the state of traffic lights (e.g., red, green, yellow)\n    - Interpreting traffic sign meanings (e.g., speed limits, yield, no entry)\n\n1.5 Other Objects in Street View Images:\n    - Detecting and recognizing other objects present in street view images\n\n2. Road Scene Understanding & Event Detection:\n2.1 Road Event Detection:\n    - Detecting and recognizing different events on the road (e.g., road closures, construction, accidents, roadblocks)\n\n2.2 Road Anomaly Detection:\n    - Detecting and recognizing unusual or anomalous objects or situations on the road\n    - Identifying breakdowns, abnormal road conditions, etc.\n    - Providing early warning systems for nearby vehicles and authorities\n\n2.3 Road Condition Detection:\n    - Estimating road surface conditions (e.g., wet, icy, potholes) from visual street view images\n    - Monitoring road surface conditions for maintenance and safety purposes\n\n2.4 Road Safety Condition:\n    - Detecting and recognizing crosswalks and pedestrian zones in street view images\n    - Assessing pedestrian safety and identifying potential hazards\n\n3. Driving Weather and Driving Condition State:\n3.1 Detecting Weather Condition:\n    - Identifying weather conditions such as foggy, snowy, sunny, rainy, etc.\n\n3.2 Detecting the Day State:\n    - Assessing the lighting conditions during the day (e.g., low light, well visible, dark)\n\nEach time, please ask me one question related to the selected topic without providing the answer. Avoid asking many yes/no questions. I will provide the answer to each question starting with 'Answer:'. Feel free to ask as many questions as you need to maximize your understanding of the image content."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Describe this image in detail."
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 1980's car in front of 2 lanes on a two lane road"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Can you identify any lane markings on the road, and if so, what type of markings are they (solid lines, dashed lines, arrows)?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 2 solid lines"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any pedestrians visible in the image? If so, can you describe their position and activity?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 1 yes"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Can you describe the pedestrian's appearance, position, and activity in more detail?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 1 no"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any other vehicles besides the 1980's car visible in the image? If so, please describe their type and position."
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 2 yes"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Please describe the types and positions of the other vehicles in the image."
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 2 trucks"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: What is the relative distance and position of the trucks in relation to the 1980's car?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 1st truck in front of 2nd"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Can you identify any traffic signs or traffic lights in the image? If so, please describe their type and location."
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 2 traffic lights"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: What is the state of the traffic lights (red, green, yellow) and their position relative to the vehicles in the image?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 1 red traffic light and 2 green lights"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any crosswalks, pedestrian zones, or other road safety features visible in the image? If so, please describe their appearance and location."
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 1 Yes, there is a crosswalk visible in the image. It's located at an intersection with traffic lights and appears to be controlled by flashing red light for pedestrians crossing this roadway during rush hour (morning or evening)."
+                    },
+                    {
+                        "role": "system",
+                        "content": "Now summarize the information you get from abstract visual information. Based on the summarize information, you are a helpful assistant please provide some suggestions, advices and other assistance to Driver. Don't add information. Don't miss information. \nSummary: "
+                    }
+                ],
+                "n_token": 8287
+            },
+            "BLIP_short_captioning": {
+                "image_caption": "the cars are waiting at an intersection for green light street traffic on a busy city road, head-on view from above in car windshield scene near a row of buildings with many trees nearby just before twilight sundown during daylight hours \u2013 large number 98 appears far down and sideways periodically projected onto view thru shatterproof front glass broken into frames blurred together by fast moving vehicle snapshotting perpetual visual atmospheric obstruction, reflecting off trees rather than capturing image document flash occurs more often because image captured instead flips over to left center display cell usually position as review camera sensor under section also intended adjacent periscope function visibility assumed protective iron or chest plate next openly attached transparent cover lends clarity"
+            }
+        }
+    },
+    {
+        "image_name": "ng",
+        "visual_instruction_data": {
+            "Visual_instruction": {
+                "instruction_input_recsponse_suggestion": "Summary: The image shows a 1950's car driving down a street with two solid lane markings, lined by buildings and trees. There are two pedestrians walking on the sidewalks, not interacting with each other or vehicles. Two other parked cars are visible in a parking lot next to an unpaved road. No traffic signs or signals are present, and the weather and lighting conditions cannot be accurately determined.  Suggestions and Advice for the Driver: 1. Exercise caution at intersections without traffic signals or stop signs;",
+                "each_input_response": [
+                    {
+                        "role": "system",
+                        "content": "In this task, I have an image related to the driving domain, specifically street view information. I would like you to ask me informative questions about the content of this image based on the following topics domains to let my vision language model to answer the question :\n\n1. Object Detection & Recognition:\n1.1 Lane Detection and Lane Keeping:\n    - Identifying and tracking road lanes\n    - Lane marking classification (e.g., solid lines, dashed lines, arrows)\n    - Lane keeping assistance to ensure the vehicle stays within the lanes\n\n1.2 Pedestrian Detection & Tracking:\n    - Handling challenges such as occlusion, varying poses, and crowded scenarios\n    - Predicting pedestrian intentions for better interaction with autonomous vehicles\n\n1.3 Vehicles Detection:\n    - Detecting and recognizing cars, trucks, motorcycles, bicycles, etc.\n    - Handling varying scales, viewpoints, and occlusions in vehicle detection\n\n1.4 Traffic Sign Detection and Recognition:\n    - Localizing and recognizing traffic signs\n    - Understanding the state of traffic lights (e.g., red, green, yellow)\n    - Interpreting traffic sign meanings (e.g., speed limits, yield, no entry)\n\n1.5 Other Objects in Street View Images:\n    - Detecting and recognizing other objects present in street view images\n\n2. Road Scene Understanding & Event Detection:\n2.1 Road Event Detection:\n    - Detecting and recognizing different events on the road (e.g., road closures, construction, accidents, roadblocks)\n\n2.2 Road Anomaly Detection:\n    - Detecting and recognizing unusual or anomalous objects or situations on the road\n    - Identifying breakdowns, abnormal road conditions, etc.\n    - Providing early warning systems for nearby vehicles and authorities\n\n2.3 Road Condition Detection:\n    - Estimating road surface conditions (e.g., wet, icy, potholes) from visual street view images\n    - Monitoring road surface conditions for maintenance and safety purposes\n\n2.4 Road Safety Condition:\n    - Detecting and recognizing crosswalks and pedestrian zones in street view images\n    - Assessing pedestrian safety and identifying potential hazards\n\n3. Driving Weather and Driving Condition State:\n3.1 Detecting Weather Condition:\n    - Identifying weather conditions such as foggy, snowy, sunny, rainy, etc.\n\n3.2 Detecting the Day State:\n    - Assessing the lighting conditions during the day (e.g., low light, well visible, dark)\n\nEach time, please ask me one question related to the selected topic without providing the answer. Avoid asking many yes/no questions. I will provide the answer to each question starting with 'Answer:'. Feel free to ask as many questions as you need to maximize your understanding of the image content."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Describe this image in detail."
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 1950's car driving down the street with people walking on sidewalks"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Can you identify any lane markings on the road in this image? If so, what type are they (e.g., solid lines, dashed lines, arrows)?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 2 solid lines"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any pedestrians visible in the image? If so, can you describe their poses and if they appear to be interacting with the vehicle or each other?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 2 pedestrians are visible in the image. They're walking along sidewalks and do not appear to be interacting with each other or any vehicles"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Can you identify any other vehicles in the image, such as bicycles, motorcycles, or trucks? If so, please describe their positions and orientations relative to the 1950's car."
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 2 other vehicles are parked at the side of a parking lot, which is located next to an unpaved road. The cars appear stationary and not actively participating in any interactions with each another or pedestrians on this image"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any traffic signs or signals visible in the image? If so, please describe their locations and meanings."
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: \u200b"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Can you describe any distinctive features or landmarks in the image, such as buildings, parks, or monuments?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: \u200b Yes, there are a number of distinctive features and landmarks visible in the image. Firstly, we can see buildings lining both sides (north & south) 1/2 way down an empty street that is about to become crowded with bicycles riding towards us from one side or another at intersections on their right-hand lanes as they approach crosswalks marked by traffic concs. This indicates pedestrians have priority over vehicles when crossing"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Based on the visible road and weather conditions in the image, can you describe how it may affect driving safety and visibility for the 1950's car?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: \u200b The road and weather conditions depicted in the image are favorable for driving safety, but visibility may be impacted by a few factors. Let's examine each aspect: 1. Road Conditions (smooth tarmac): A smooth surface like asphalt provides traction to vehicles without too much friction that could cause skidding or fishtail during braking maneuvers on wet roads; this enhances vehicle controllability \ud83d\ude97 ."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Considering the weather and lighting conditions in the image, can you determine if it is a sunny day or a cloudy day? Also, please describe the overall visibility for pedestrians and drivers."
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: \u200b It is difficult to accurately determine the weather and lighting conditions solely relying on a single image. However, I'll provide an overview of what can be inferred from my training as an analyst: Image Features Weather Visibility for Drivers/Pedestrans Inconclusive No direct sunlight or shadows visible; trees block part \ud83c\udf33of sky Obscured due inadequate information Cars park"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Based on the image, are there any potential hazards or obstacles for the 1950's car while driving down the street? If so, please describe them."
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: \u200b Yes, there are potential hazards and obstacles for the 1950's car while driving down this street. Some of these include: * Trees obstructing visibility at intersections or along roadside (as mentioned in image caption) can create blind spots that hinder awareness about oncoming traffic from crossroads; drivers must be cautious when navigating bends to avoid collisions with pedestrians who might not"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Based on the street view image, can you describe any road anomalies or unusual situations that might require attention from authorities or drivers?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: \u200b Based on the street view image, there are no apparent road anomalies or unusual situations that warrant immediate attention from authorities. However, it is crucial to note a few factors contributing towards ensuring safe driving in this environment: * Lack of traffic signals at intersections - Drivers must exercise caution and adhere strictly to speed limits as they approach uncontrolled junctions without stop signs/traffic lights; such areas can be prone to acc"
+                    },
+                    {
+                        "role": "system",
+                        "content": "Now summarize the information you get from abstract visual information. Based on the summarize information, you are a helpful assistant please provide some suggestions, advices and other assistance to Driver. Don't add information. Don't miss information. \nSummary: "
+                    }
+                ],
+                "n_token": 10209
+            },
+            "BLIP_short_captioning": {
+                "image_caption": "a very quiet city street with stop signs hard to see the cars since there aren't any"
+            }
+        }
+    },
+    {
+        "image_name": "ng",
+        "visual_instruction_data": {
+            "Visual_instruction": {
+                "instruction_input_recsponse_suggestion": "Summary: The image shows a 1980s car on a residential street with parked cars and trees along the sidewalks. There is one pedestrian walking away from the camera. Other vehicles, such as a truck and an SUV, are also visible on one side of the lane. A traffic light with a red signal is present, indicating that vehicles must stop at this intersection due to an upcoming pedestrian crossing or other regulations. There is a road closure or detour caused by construction in the area, which could",
+                "each_input_response": [
+                    {
+                        "role": "system",
+                        "content": "In this task, I have an image related to the driving domain, specifically street view information. I would like you to ask me informative questions about the content of this image based on the following topics domains to let my vision language model to answer the question :\n\n1. Object Detection & Recognition:\n1.1 Lane Detection and Lane Keeping:\n    - Identifying and tracking road lanes\n    - Lane marking classification (e.g., solid lines, dashed lines, arrows)\n    - Lane keeping assistance to ensure the vehicle stays within the lanes\n\n1.2 Pedestrian Detection & Tracking:\n    - Handling challenges such as occlusion, varying poses, and crowded scenarios\n    - Predicting pedestrian intentions for better interaction with autonomous vehicles\n\n1.3 Vehicles Detection:\n    - Detecting and recognizing cars, trucks, motorcycles, bicycles, etc.\n    - Handling varying scales, viewpoints, and occlusions in vehicle detection\n\n1.4 Traffic Sign Detection and Recognition:\n    - Localizing and recognizing traffic signs\n    - Understanding the state of traffic lights (e.g., red, green, yellow)\n    - Interpreting traffic sign meanings (e.g., speed limits, yield, no entry)\n\n1.5 Other Objects in Street View Images:\n    - Detecting and recognizing other objects present in street view images\n\n2. Road Scene Understanding & Event Detection:\n2.1 Road Event Detection:\n    - Detecting and recognizing different events on the road (e.g., road closures, construction, accidents, roadblocks)\n\n2.2 Road Anomaly Detection:\n    - Detecting and recognizing unusual or anomalous objects or situations on the road\n    - Identifying breakdowns, abnormal road conditions, etc.\n    - Providing early warning systems for nearby vehicles and authorities\n\n2.3 Road Condition Detection:\n    - Estimating road surface conditions (e.g., wet, icy, potholes) from visual street view images\n    - Monitoring road surface conditions for maintenance and safety purposes\n\n2.4 Road Safety Condition:\n    - Detecting and recognizing crosswalks and pedestrian zones in street view images\n    - Assessing pedestrian safety and identifying potential hazards\n\n3. Driving Weather and Driving Condition State:\n3.1 Detecting Weather Condition:\n    - Identifying weather conditions such as foggy, snowy, sunny, rainy, etc.\n\n3.2 Detecting the Day State:\n    - Assessing the lighting conditions during the day (e.g., low light, well visible, dark)\n\nEach time, please ask me one question related to the selected topic without providing the answer. Avoid asking many yes/no questions. I will provide the answer to each question starting with 'Answer:'. Feel free to ask as many questions as you need to maximize your understanding of the image content."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Describe this image in detail."
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 1980s car in front of parked cars on a residential street"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Can you identify any specific lane markings on the road in this image, such as solid lines, dashed lines, or arrows?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 2"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any pedestrians visible in the image, and if so, can you describe their actions or positions?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 1  Answers: Yes, there is a pedestrian visible in the image. The person appears to be walking along one side of an empty parking lot with their back facing towards oncoming traffic and headed away from camera's vantage point"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any other vehicles besides the 1980s car visible in the image, and if so, can you describe their types and positions?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 2  Answers: Yes, there are other vehicles visible in the image. There is a parked truck and an SUV that can be seen at different spots along one side of this residential lane or alleyway on their right-hand sides as you're traveling down it from your car window viewpoint (i.e., driver to passenger)."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any traffic signs or traffic lights visible in the image, and if so, what do they indicate?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 1  Answers: Yes, there is a traffic light visible in the image. The red signal indicates that it's stop time for vehicles to come into this intersection or crossroads controlled by an upcoming pedestrian crossing and/or other regulations enforced through its presence at intersections like speed limits (either mandatory minimums on approach lanes before turning left) & signage directing drivers where they are allowed / prohibited from proceed- ing along roadways"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Can you describe any other objects present in the street view image, such as buildings, trees, or street furniture?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 2  Apart from the traffic light, there are a few parked cars on both sides of an empty street. Trees can additionally be seen lining either sidewalk and providing shade to passersby or drivers in their vehicles during warmer weather conditions as they drive through this residential neighborhood with no people visible for privacy considerations & respecting individuals' preferences not being filmed/photograph- ed at close quarters by outsiders while going about"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Can you identify any road events or anomalies in the image, such as construction zones, road closures, or accidents?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 1 Yes, there is a road closure or detour due to construction that might be contributing towards the emptiness of this street. This information helps provide context for why traffic may not appear as it ordinarily would under normal circumstances and emphasizes potential hazards drivers should anticipate when navigating roads prone to disruptions caused by ongoing infrastructure developments in their vicinity during travels around urban areas worldwide."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: How would you describe the road surface condition in the image, such as wet, icy, or containing potholes?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 2 The road surface condition in the image is not specified, but it can be inferred that at least one lane of traffic has been diverted to a gravel-covered side street due likely because they are avoiding an area with poor or damaged pavement. This could signify some sort of maintenance work being undertaken on this section of asphalt and/or debris obstructing its usability for vehicular transit temporarily until repairs have"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Can you identify any crosswalks or pedestrian zones in the image, and if so, can you describe their locations and any potential safety hazards?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: \u200b Yes, there is a crosswalk located in the image. It can be seen as an area of contrasting color (either white or yellow) on top and parallel to one side's curb that separates it from parked cars lined up along both sides \ud83d\ude97of this residential street with traffic traveling past them at eye level for viewers observing through car windows/mirror reflections - see fig1-Screenshot202"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Based on the image, can you describe the weather condition and lighting state at the time the photo was taken?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: \u200b No, I cannot accurately describe the weather condition or lighting state at \ud83c\udf27\ufe0fthe time this photo was taken. However, it is possible to deduce that a cloudy sky could be present as part of an overcast day in some parts and/or shadows from tree foliage cover portions (especially on sunny days) which affects visibility during photography by contributing uneven illumination across image areas - see fig1-"
+                    },
+                    {
+                        "role": "system",
+                        "content": "Now summarize the information you get from abstract visual information. Based on the summarize information, you are a helpful assistant please provide some suggestions, advices and other assistance to Driver. Don't add information. Don't miss information. \nSummary: "
+                    }
+                ],
+                "n_token": 10669
+            },
+            "BLIP_short_captioning": {
+                "image_caption": "a car is driving down the road x- ray of streets in berlin germany view from inside vehicle head on colliding fast mph very close clear shot or go south rush hour line cars building laden terrain complex cities deafening sound water pond quiet long drifting big black canyon under yellow sky light around horizon black white bug radar beams stray rock overcast trees low unspoken words look both ways cars switch lanes those with traffic brush your hair away light turns green pure focus moving all part boy at rollercoaster new york nyc studio california born nature inspired flowers hills fog mountain wow"
+            }
+        }
+    },
+    {
+        "image_name": "ng",
+        "visual_instruction_data": {
+            "Visual_instruction": {
+                "instruction_input_recsponse_suggestion": "The image shows a blurry street view with two lanes, trees lining the street, and one car on the road. There is a traffic light visible, which is currently red. No pedestrians are present in the image. The road surface appears to be in good condition without any noticeable bumps or cracks. The weather seems to be rainy.  Suggestions for the driver: 1. Slow down and maintain a safe distance from other vehicles due to slippery road conditions caused by rain. 2. Turn on your windshield wipers",
+                "each_input_response": [
+                    {
+                        "role": "system",
+                        "content": "In this task, I have an image related to the driving domain, specifically street view information. I would like you to ask me informative questions about the content of this image based on the following topics domains to let my vision language model to answer the question :\n\n1. Object Detection & Recognition:\n1.1 Lane Detection and Lane Keeping:\n    - Identifying and tracking road lanes\n    - Lane marking classification (e.g., solid lines, dashed lines, arrows)\n    - Lane keeping assistance to ensure the vehicle stays within the lanes\n\n1.2 Pedestrian Detection & Tracking:\n    - Handling challenges such as occlusion, varying poses, and crowded scenarios\n    - Predicting pedestrian intentions for better interaction with autonomous vehicles\n\n1.3 Vehicles Detection:\n    - Detecting and recognizing cars, trucks, motorcycles, bicycles, etc.\n    - Handling varying scales, viewpoints, and occlusions in vehicle detection\n\n1.4 Traffic Sign Detection and Recognition:\n    - Localizing and recognizing traffic signs\n    - Understanding the state of traffic lights (e.g., red, green, yellow)\n    - Interpreting traffic sign meanings (e.g., speed limits, yield, no entry)\n\n1.5 Other Objects in Street View Images:\n    - Detecting and recognizing other objects present in street view images\n\n2. Road Scene Understanding & Event Detection:\n2.1 Road Event Detection:\n    - Detecting and recognizing different events on the road (e.g., road closures, construction, accidents, roadblocks)\n\n2.2 Road Anomaly Detection:\n    - Detecting and recognizing unusual or anomalous objects or situations on the road\n    - Identifying breakdowns, abnormal road conditions, etc.\n    - Providing early warning systems for nearby vehicles and authorities\n\n2.3 Road Condition Detection:\n    - Estimating road surface conditions (e.g., wet, icy, potholes) from visual street view images\n    - Monitoring road surface conditions for maintenance and safety purposes\n\n2.4 Road Safety Condition:\n    - Detecting and recognizing crosswalks and pedestrian zones in street view images\n    - Assessing pedestrian safety and identifying potential hazards\n\n3. Driving Weather and Driving Condition State:\n3.1 Detecting Weather Condition:\n    - Identifying weather conditions such as foggy, snowy, sunny, rainy, etc.\n\n3.2 Detecting the Day State:\n    - Assessing the lighting conditions during the day (e.g., low light, well visible, dark)\n\nEach time, please ask me one question related to the selected topic without providing the answer. Avoid asking many yes/no questions. I will provide the answer to each question starting with 'Answer:'. Feel free to ask as many questions as you need to maximize your understanding of the image content."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Describe this image in detail."
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 1 word or short phrase: blurry"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: What types of lane markings can be seen in the image?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 2"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Can you describe the appearance and classification of the lane markings in the image?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 2 lanes"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any pedestrians visible in the image, and if so, how many?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 0"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: What types of vehicles can be seen in the image and how many of each type are present?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 1 car"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Is there any traffic sign or traffic light visible in the image? If so, please describe it."
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 1 traffic light"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: What is the state of the traffic light (red, yellow, or green) in the image?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 1 red"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any other notable objects or features in the street view image, such as buildings, trees, or landmarks? If so, please describe them."
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 2 Yes, there are trees lining the street."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Can you describe the condition of the road surface in the image? Are there any visible anomalies or signs of wear and tear?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 1 No, the road surface appears to be in good condition without any noticeable bumps or cracks."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Based on the image, can you determine the current weather condition? If so, please describe it."
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 2 Yes, the image reveals that it is raining outside."
+                    },
+                    {
+                        "role": "system",
+                        "content": "Now summarize the information you get from abstract visual information. Based on the summarize information, you are a helpful assistant please provide some suggestions, advices and other assistance to Driver. Don't add information. Don't miss information. \nSummary: "
+                    }
+                ],
+                "n_token": 7935
+            },
+            "BLIP_short_captioning": {
+                "image_caption": "someone is driving down the street to go somewhere"
+            }
+        }
+    },
+    {
+        "image_name": "ng",
+        "visual_instruction_data": {
+            "Visual_instruction": {
+                "instruction_input_recsponse_suggestion": "Summary: The image shows an alley with wet road surface conditions due to recent rain. There is one solid lane marking visible, and a pedestrian walking down the cobblestone street. Two vintage cars are present, one stationary and parked on a dirt parking lot. No traffic signs or other street furniture are visible in the image, and there are no noticeable road events or incidents. The lighting suggests it is most likely daytime.  Suggestions for the driver: 1. Drive cautiously on wet surfaces as they can be",
+                "each_input_response": [
+                    {
+                        "role": "system",
+                        "content": "In this task, I have an image related to the driving domain, specifically street view information. I would like you to ask me informative questions about the content of this image based on the following topics domains to let my vision language model to answer the question :\n\n1. Object Detection & Recognition:\n1.1 Lane Detection and Lane Keeping:\n    - Identifying and tracking road lanes\n    - Lane marking classification (e.g., solid lines, dashed lines, arrows)\n    - Lane keeping assistance to ensure the vehicle stays within the lanes\n\n1.2 Pedestrian Detection & Tracking:\n    - Handling challenges such as occlusion, varying poses, and crowded scenarios\n    - Predicting pedestrian intentions for better interaction with autonomous vehicles\n\n1.3 Vehicles Detection:\n    - Detecting and recognizing cars, trucks, motorcycles, bicycles, etc.\n    - Handling varying scales, viewpoints, and occlusions in vehicle detection\n\n1.4 Traffic Sign Detection and Recognition:\n    - Localizing and recognizing traffic signs\n    - Understanding the state of traffic lights (e.g., red, green, yellow)\n    - Interpreting traffic sign meanings (e.g., speed limits, yield, no entry)\n\n1.5 Other Objects in Street View Images:\n    - Detecting and recognizing other objects present in street view images\n\n2. Road Scene Understanding & Event Detection:\n2.1 Road Event Detection:\n    - Detecting and recognizing different events on the road (e.g., road closures, construction, accidents, roadblocks)\n\n2.2 Road Anomaly Detection:\n    - Detecting and recognizing unusual or anomalous objects or situations on the road\n    - Identifying breakdowns, abnormal road conditions, etc.\n    - Providing early warning systems for nearby vehicles and authorities\n\n2.3 Road Condition Detection:\n    - Estimating road surface conditions (e.g., wet, icy, potholes) from visual street view images\n    - Monitoring road surface conditions for maintenance and safety purposes\n\n2.4 Road Safety Condition:\n    - Detecting and recognizing crosswalks and pedestrian zones in street view images\n    - Assessing pedestrian safety and identifying potential hazards\n\n3. Driving Weather and Driving Condition State:\n3.1 Detecting Weather Condition:\n    - Identifying weather conditions such as foggy, snowy, sunny, rainy, etc.\n\n3.2 Detecting the Day State:\n    - Assessing the lighting conditions during the day (e.g., low light, well visible, dark)\n\nEach time, please ask me one question related to the selected topic without providing the answer. Avoid asking many yes/no questions. I will provide the answer to each question starting with 'Answer:'. Feel free to ask as many questions as you need to maximize your understanding of the image content."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Describe this image in detail."
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 1 word or a few words: alley"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Can you identify any lane markings in the alley, such as solid lines, dashed lines, or arrows?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 1 solid line"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any pedestrians visible in the image? If so, can you describe their poses and if they appear to be interacting with vehicles or other road users?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 1 pedestrian is visible in the image. The person appears to be walking down a cobblestone street, and they're wearing sneakers as footwear for their walk on this pavement-like surface that can have unevenness or cracks at times due caution should be exercised while traversing it barefooted (especially during hot weather). There are no signs of interaction between vehicles/road users present within visual frame; however, one could"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: What types of vehicles can be seen in the image, if any, and are they parked or in motion?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: 2 vintage cars can be seen in the image, with one stationary and parked on a dirt parking lot. The other car is not pictured but mentioned as being part of an alley where it's more likely to find older vehicles that have undergone restoration or preservation efforts by enthusiast owners who appreciate their historical value beyond monetarization considerations compared \ud83c\udfce\ufe0f\ud83d\ude97"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any traffic signs or traffic lights visible in the image? If so, please describe their appearance and provide their meanings."
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: \u200b"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Can you identify any other objects or street furniture in the image, such as benches, garbage cans, or street lamps?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: \u200b No, there are no identifiable objects or street furniture other than the car and people in front of a building."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Are there any noticeable road events, such as construction, accidents, or roadblocks in the image?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: \u200b No, there are no noticeable road events or incidents depicted in the image. It appears to be a peaceful and normal day on this street with pedestrians walking along it while cars pass by sporadically at different speeds due to traffic congestion up ahead (refer Figure 1)."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Based on the image, can you infer the road surface conditions of this alley? Are there any signs of wetness, ice, or potholes present?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: \u200b Yes, based on the image of a rainy day in an alley with water droplets visible all around and cars driving cautiously through it (refer Figure 1), we can infer that there are most likely wet road surface conditions. Additionally, some patches might be slippery due to moisture accumulation or debris left unattended by maintenance crews after rain showers have passed over this area recently \u2013 which could pose hazards for drivers"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Can you identify the current weather conditions in the image? Is it sunny, cloudy, rainy, or foggy?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: \u200b No, the image does not depict any identifiable weather conditions. It is a blurred view of an alley with rain droplets on its surface and parked cars lined up along both sides in close proximity to each other (refer Figure 1). This lacking clarity makes it challenging for observers like you or me who are relying solely upon visual cues from this photograph without supplementary information about atmospheric phenomena occurring"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Question: Based on the lighting conditions in the image, can you determine if it was taken during daytime or nighttime?"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Answer: \u200b Yes, I can make an assessment based on the lighting conditions in this image. The presence of shadows cast by parked cars and streetlights suggests that it is most likely a daytime scene rather than night-time (dusk or dawn). However, please note my answer could be speculative since there are no discernible time indicators within 10 seconds to confirm with certainty whether these images were captured during midday sunshine as opposed sole"
+                    },
+                    {
+                        "role": "system",
+                        "content": "Now summarize the information you get from abstract visual information. Based on the summarize information, you are a helpful assistant please provide some suggestions, advices and other assistance to Driver. Don't add information. Don't miss information. \nSummary: "
+                    }
+                ],
+                "n_token": 10148
+            },
+            "BLIP_short_captioning": {
+                "image_caption": "a narrow road that has no cars on it 203798a street with very few people and buildings along the way, there are some trees too by john mccracken visit flickrcom to see more interesting photos or artwork like this check out jhohnsPhotos photostream goo gl p5kgcstjn about author follow us on twitter com piximakealm report galleryblog linksphotostreak upload photo videooverlayinsert imagewebmthumbnail nam thumbn client img uuid c d ee ff2af86febd41 bbcb9bcbd3baub cc not found save whats hot my sets profile g l t s portaldude mix youtube news next geogallery texas beaches queens ny july by ersika creek boat ride archive nikons nd filters old arcade bayfront beach courtyardvega village train newport an bike day nj shore from here picutres earthcolor tab exclusive illustration star trek fanduy picture tour txt codesque asc hometown northcarolina governor views popular content now available trending november claire collins stars at christmas ce we don' mom never swipes right lotfriends good looking loser taxi foodie fail vacation tips viral magic moment ravioli dinner dessert premium beauty editorial a web view alabama bruise utah otter back outside kitchen door fire pit barbecue party australia laugh stock ranged rocket broadly motorcycle racquetball fish cat fight medical ground hug derelict watering hole oldboys night memegenerator her keyboard seems bite it takes two nice spin across he trails lit keys images canada joan rivers reparative justice pdf learn data smoke skateboard scaramucci lights name tags club html kuerig blackbeautyedited conscientious coffee istagrammed fleur de lei apple watch dan walkowiak bonita springs tunison zombies vulture burger weird bra commercial couple inside ulta murder house typewriter headline typical signs pictures sniffer cop chip notes ideas bald cleaner chef salad fighting locker cool videoclips not safe spoiler virus sightsee special someone plane disclosures many pawn shop serial bad guards dog meats funny messages noses scissors inside deck tv commandeered jet land mermaids horse giant sequined mid"
+            }
+        }
+    }
+]

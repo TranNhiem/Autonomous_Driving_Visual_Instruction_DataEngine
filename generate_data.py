@@ -85,11 +85,12 @@ target_topic_instruction = \
 # target_topic_instruction = \
 #     "In this task, I have an image from the camera of a car. \
 #     We need to extract information from this image to help give the driver of the car helpful information. \
-#     I would like you to ask me informative questions about the content of this image based on the following topics and domains:\n\n\
+#     I would like you to ask me informative questions about the content of this image based on the following topics domains to let my vision language model to answer the question :\n\n\
 #     1. Object Detection & Recognition:\n1.1 Lane Detection and Lane Keeping:\n    - Identifying and tracking road lanes\n    - Lane marking classification (e.g., solid lines, dashed lines, arrows)\n    - Lane keeping assistance to ensure the vehicle stays within the lanes\n\n1.2 Pedestrian Detection & Tracking:\n    - Handling challenges such as occlusion, varying poses, and crowded scenarios\n    - Predicting pedestrian intentions for better interaction with autonomous vehicles\n\n1.3 Vehicles Detection:\n    - Detecting and recognizing cars, trucks, motorcycles, bicycles, etc.\n    - Handling varying scales, viewpoints, and occlusions in vehicle detection\n\n1.4 Traffic Sign Detection and Recognition:\n    - Localizing and recognizing traffic signs\n    - Understanding the state of traffic lights (e.g., red, green, yellow)\n    - Interpreting traffic sign meanings (e.g., speed limits, yield, no entry)\n\n1.5 Other Objects in Street View Images:\n    - Detecting and recognizing other objects present in street view images\n\n2. Road Scene Understanding & Event Detection:\n2.1 Road Event Detection:\n    - Detecting and recognizing different events on the road (e.g., road closures, construction, accidents, roadblocks)\n\n2.2 Road Anomaly Detection:\n    - Detecting and recognizing unusual or anomalous objects or situations on the road\n    - Identifying breakdowns, abnormal road conditions, etc.\n    - Providing early warning systems for nearby vehicles and authorities\n\n2.3 Road Condition Detection:\n    - Estimating road surface conditions (e.g., wet, icy, potholes) from visual street view images\n    - Monitoring road surface conditions for maintenance and safety purposes\n\n2.4 Road Safety Condition:\n    - Detecting and recognizing crosswalks and pedestrian zones in street view images\n    - Assessing pedestrian safety and identifying potential hazards\n\n3. Driving Weather and Driving Condition State:\n3.1 Detecting Weather Condition:\n    - Identifying weather conditions such as foggy, snowy, sunny, rainy, etc.\n\n3.2 Detecting the Day State:\n    - Assessing the lighting conditions during the day (e.g., low light, well visible, dark)\n\n\
 #     Each time, please ask me one question about the image. \
 #     Avoid asking many yes/no questions. I will provide the answer to each question starting with 'Answer:'. \
 #     Feel free to ask as many questions as you need to maximize your understanding of the image content. "
+
 ## Testing case
 input_INSTRUCTION=target_topic_instruction
 
@@ -309,6 +310,59 @@ def main(args):
             # label.save(f'./cityscape_test_imgs/test_segment_{i}.png')
             # image.save(f'./cityscape_test_imgs/gtfine_test_image_{i}.png')
             name= img_names[i]
+            name_start = str(name).find("/Cityscapes/")#["Cityscapes": 40.84.133.133 server, "cityscape_synthetic": 140.115.53.102 server]
+            image_path = name[0][name_start-1:]
+            #images_names.append(image_path) 
+
+            ## Generate Visual Instruction Dataset
+            visual_instruction_data= generate(blip, image, args.gpt_model, 
+                                               n_rounds=args.n_rounds,
+                                               n_blip2_context=args.n_blip2_context,
+                                               print_mode=args.chat_mode, 
+                                               BLIP_max_length_token_output=args.bli2_max_lenght_token_gen, 
+                                               BLIP_llm_decoding_strategy=args.blip2_llm_decoding_strategy
+                                               )
+            
+            image_input_output={'image_name': image_path, 'visual_instruction_data': visual_instruction_data}
+            instruction_input_output.append(image_input_output)
+            
+            
+            if i==5: 
+                break
+
+        
+        save_name= os.path.join(args.save_path, 'testing_visual_instruction_data_blip2_vicuna_13B_gpt4_5_gptcache_img.json')
+        with open(save_name, 'w') as f:
+            json.dump(instruction_input_output, f)
+
+    elif args.datasets == 'multiview':
+        # Any dataset with images of multiple directions of the car
+        # Assumed structure:
+        # dataset = [{'left': Image, 'right': Image, 'front': Image, 'back': Image, 
+        #             'label': label, 'name': name}, ...]
+
+        img_size= 480 # Resize Corresponding Original Image Shape if transform is None
+
+        ## If we want to Resize to Square 
+        transform = transforms.Compose([
+            transforms.Resize((256, 256)),
+            transforms.ToTensor(),
+            # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]), #mageNet normalization
+            ## convert back to PIL image
+            transforms.ToPILImage()
+            ])
+        
+        blip = get_blip_model(base_model=args.blip_type_model, blip_model=args.blip_LLM , cache_dir=args.cache_dir, load_bit=args.blip_load_bit)
+        
+        instruction_input_output=[]
+        for i, (image_and_lable, img_names) in enumerate(dataset):
+            # do something with the image and label, for example print their shapes
+            image= image_and_lable[0]
+            label= image_and_lable[1]
+            print(f"Image shape: {image.size}, Segment Label shape: {label.size}")
+            # label.save(f'./cityscape_test_imgs/test_segment_{i}.png')
+            # image.save(f'./cityscape_test_imgs/gtfine_test_image_{i}.png')
+            name= img_names[i]
             name_start = str(name).find("/cityscape_synthetic/")
             image_path = name[0][name_start-1:]
             #images_names.append(image_path) 
@@ -334,9 +388,8 @@ def main(args):
         save_name= os.path.join(args.save_path, 'visual_instruction_data_blip2_vicuna_13B_gpt4_20_img.json')
         with open(save_name, 'w') as f:
             json.dump(instruction_input_output, f)
-
-    else: 
-         raise NotImplementedError('Dataset {} is currently not supported.'.format(args.datasets))
+    else:
+        raise NotImplementedError('Dataset {} is currently not supported.'.format(args.datasets))
       
 
 if __name__ == '__main__':
@@ -354,11 +407,11 @@ if __name__ == '__main__':
         parser.add_argument('--blip_type_model', type=str, default='instructblip', choices=['blip2', 'instructblip'], help='choosing type of BLIP  Model')
         parser.add_argument('--blip_LLM', type=str, default='vicuna-13B',choices= ['FlanT5 XXL','FlanT5 XL COCO','OPT6.7B COCO','OPT2.7B COCO', 'FlanT5 XL','OPT6.7B', 'OPT2.7B','Ins_FlanT5 XXL','Ins_FlanT5 XL','vicuna-13B', 'vicuna-7B',], 
                             help='choosing existing LLM from BLIP Available Model')
-        parser.add_argument('--blip_load_bit', type=int, default=8, choices=[4, 8, 16],help='choosing bit to load BLIP LLM model ## Noted for FlantT5 Family should use bit=16 to avoid error')
+        parser.add_argument('--blip_load_bit', type=int, default=16, choices=[4, 8, 16],help='choosing bit to load BLIP LLM model ## Noted for FlantT5 Family should use bit=16 to avoid error')
         parser.add_argument('--cache_dir', type=str, default="/data/rick/pretrained_weights/Instruct_blip/", 
                             help='Saving and Loading the Pretrained in certain Directory instead save in Huggingface cache default')
         
-        parser.add_argument('--n_blip2_context', type=int, default=-1, 
+        parser.add_argument('--n_blip2_context', type=int, default=1, 
                             help='Number of QA rounds visible to BLIP-2. Default is 1, which means BLIP-2 only remember one previous question. -1 means BLIP-2 can see all the QA rounds')
         parser.add_argument('--blip2_llm_decoding_strategy', type=str, default='contrastive_search',choices=['beam_search', 'nucleus', 'contrastive_search'], 
                             help='Decoding strategy for BLIP-2 LLM. Default is nucleus sampling.')
@@ -371,7 +424,7 @@ if __name__ == '__main__':
                             help='Number of QA rounds between GPT and BLIP. Default is 10, which costs about 3k tokens in GPT API.')
         parser.add_argument('--chat_mode', type=str, default="chat", choices=['chat', 'no'],
                             help='chat mode or no chat mode if chat mode, it will print out the chat history')
-        parser.add_argument('--gpt_model', type=str, default='gpt-35-turbo', choices=['gpt-4','gpt-35-turbo',  'gpt3', 'text-davinci-003' ],
+        parser.add_argument('--gpt_model', type=str, default='gpt-4', choices=['gpt-4','gpt-35-turbo',  'gpt3', 'text-davinci-003' ],
                             help='model used to ask question. can be gpt3, chatgpt, or its concrete tags in openai system')
         
         args = parser.parse_args()
