@@ -201,8 +201,7 @@ class Generate_instruction_Input_output():
         answer = self.blip2.abstract_visual_output(self.img, blip2_prompt,
                                                    llm_decoding_strategy=decoding_strategy,
                                                    max_length=max_length, min_length=min_length) 
-        if True:
-        # if self.debug:
+        if self.debug:
             print("Answer:", answer)
         return answer
 

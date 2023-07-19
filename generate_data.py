@@ -19,6 +19,8 @@ from llm_gpt import (Generate_instruction_Input_output, call_chatgpt,
 from torchvision import transforms
 from utils import CityscapesSegmentation
 
+from PIL import Image
+
 ##***************************************************************************************************
 ## ------------  Section 1 Setting the Parameters and Configure BLIP Model -----------------
 ##***************************************************************************************************
@@ -75,21 +77,21 @@ VALID_GPT3_MODELS = ['text-davinci-003', 'text-davinci-002', 'davinci']
 # "I will provide my response starting with 'Answer:'. " \
 
 
-target_topic_instruction = \
-    "In this task, I have an image from the camera of a car. \
-    We need to extract information from this image to help give the driver of the car helpful information. \
-    I would like you to ask me informative questions about the content of this image. \
-    Avoid asking many yes/no questions. I will provide the answer to each question starting with 'Answer:'. \
-    Feel free to ask as many questions as you need to maximize your understanding of the image content. "
-
 # target_topic_instruction = \
 #     "In this task, I have an image from the camera of a car. \
 #     We need to extract information from this image to help give the driver of the car helpful information. \
-#     I would like you to ask me informative questions about the content of this image based on the following topics domains to let my vision language model to answer the question :\n\n\
-#     1. Object Detection & Recognition:\n1.1 Lane Detection and Lane Keeping:\n    - Identifying and tracking road lanes\n    - Lane marking classification (e.g., solid lines, dashed lines, arrows)\n    - Lane keeping assistance to ensure the vehicle stays within the lanes\n\n1.2 Pedestrian Detection & Tracking:\n    - Handling challenges such as occlusion, varying poses, and crowded scenarios\n    - Predicting pedestrian intentions for better interaction with autonomous vehicles\n\n1.3 Vehicles Detection:\n    - Detecting and recognizing cars, trucks, motorcycles, bicycles, etc.\n    - Handling varying scales, viewpoints, and occlusions in vehicle detection\n\n1.4 Traffic Sign Detection and Recognition:\n    - Localizing and recognizing traffic signs\n    - Understanding the state of traffic lights (e.g., red, green, yellow)\n    - Interpreting traffic sign meanings (e.g., speed limits, yield, no entry)\n\n1.5 Other Objects in Street View Images:\n    - Detecting and recognizing other objects present in street view images\n\n2. Road Scene Understanding & Event Detection:\n2.1 Road Event Detection:\n    - Detecting and recognizing different events on the road (e.g., road closures, construction, accidents, roadblocks)\n\n2.2 Road Anomaly Detection:\n    - Detecting and recognizing unusual or anomalous objects or situations on the road\n    - Identifying breakdowns, abnormal road conditions, etc.\n    - Providing early warning systems for nearby vehicles and authorities\n\n2.3 Road Condition Detection:\n    - Estimating road surface conditions (e.g., wet, icy, potholes) from visual street view images\n    - Monitoring road surface conditions for maintenance and safety purposes\n\n2.4 Road Safety Condition:\n    - Detecting and recognizing crosswalks and pedestrian zones in street view images\n    - Assessing pedestrian safety and identifying potential hazards\n\n3. Driving Weather and Driving Condition State:\n3.1 Detecting Weather Condition:\n    - Identifying weather conditions such as foggy, snowy, sunny, rainy, etc.\n\n3.2 Detecting the Day State:\n    - Assessing the lighting conditions during the day (e.g., low light, well visible, dark)\n\n\
-#     Each time, please ask me one question about the image. \
+#     I would like you to ask me informative questions about the content of this image. \
 #     Avoid asking many yes/no questions. I will provide the answer to each question starting with 'Answer:'. \
 #     Feel free to ask as many questions as you need to maximize your understanding of the image content. "
+
+target_topic_instruction = \
+    "In this task, I have an image from the camera of a car. \
+    We need to extract information from this image to help give the driver of the car helpful information. \
+    I would like you to ask me informative questions about the content of this image based on the following topics domains to let my vision language model to answer the question :\n\n\
+    1. Object Detection & Recognition:\n1.1 Lane Detection and Lane Keeping:\n    - Identifying and tracking road lanes\n    - Lane marking classification (e.g., solid lines, dashed lines, arrows)\n    - Lane keeping assistance to ensure the vehicle stays within the lanes\n\n1.2 Pedestrian Detection & Tracking:\n    - Handling challenges such as occlusion, varying poses, and crowded scenarios\n    - Predicting pedestrian intentions for better interaction with autonomous vehicles\n\n1.3 Vehicles Detection:\n    - Detecting and recognizing cars, trucks, motorcycles, bicycles, etc.\n    - Handling varying scales, viewpoints, and occlusions in vehicle detection\n\n1.4 Traffic Sign Detection and Recognition:\n    - Localizing and recognizing traffic signs\n    - Understanding the state of traffic lights (e.g., red, green, yellow)\n    - Interpreting traffic sign meanings (e.g., speed limits, yield, no entry)\n\n1.5 Other Objects in Street View Images:\n    - Detecting and recognizing other objects present in street view images\n\n2. Road Scene Understanding & Event Detection:\n2.1 Road Event Detection:\n    - Detecting and recognizing different events on the road (e.g., road closures, construction, accidents, roadblocks)\n\n2.2 Road Anomaly Detection:\n    - Detecting and recognizing unusual or anomalous objects or situations on the road\n    - Identifying breakdowns, abnormal road conditions, etc.\n    - Providing early warning systems for nearby vehicles and authorities\n\n2.3 Road Condition Detection:\n    - Estimating road surface conditions (e.g., wet, icy, potholes) from visual street view images\n    - Monitoring road surface conditions for maintenance and safety purposes\n\n2.4 Road Safety Condition:\n    - Detecting and recognizing crosswalks and pedestrian zones in street view images\n    - Assessing pedestrian safety and identifying potential hazards\n\n3. Driving Weather and Driving Condition State:\n3.1 Detecting Weather Condition:\n    - Identifying weather conditions such as foggy, snowy, sunny, rainy, etc.\n\n3.2 Detecting the Day State:\n    - Assessing the lighting conditions during the day (e.g., low light, well visible, dark)\n\n\
+    Each time, please ask me one question about the image. \
+    Avoid asking many yes/no questions. I will provide the answer to each question starting with 'Answer:'. \
+    Feel free to ask as many questions as you need to maximize your understanding of the image content. "
 
 ## Testing case
 input_INSTRUCTION=target_topic_instruction
@@ -116,7 +118,8 @@ solution_INSTRUCTION = \
 # 'Summary: '
 
 
-ANSWER_INSTRUCTION = 'Answer given questions. If you are not sure about the answer, say you don\'t know honestly. Don\'t imagine any contents that are not in the image.'
+# ANSWER_INSTRUCTION = 'Answer given questions. If you are not sure about the answer, say you don\'t know honestly. Don\'t imagine any contents that are not in the image.'
+ANSWER_INSTRUCTION = ''
 SUB_ANSWER_INSTRUCTION = 'Answer: '  # template following blip2 huggingface demo
 FIRST_instruction = 'Describe this image in detail.'
 
@@ -319,7 +322,7 @@ def main(args):
                                                n_rounds=args.n_rounds,
                                                n_blip2_context=args.n_blip2_context,
                                                print_mode=args.chat_mode, 
-                                               BLIP_max_length_token_output=args.bli2_max_lenght_token_gen, 
+                                               BLIP_max_length_token_output=args.blip2_max_length_token_gen, 
                                                BLIP_llm_decoding_strategy=args.blip2_llm_decoding_strategy
                                                )
             
@@ -388,6 +391,52 @@ def main(args):
         save_name= os.path.join(args.save_path, 'visual_instruction_data_blip2_vicuna_13B_gpt4_20_img.json')
         with open(save_name, 'w') as f:
             json.dump(instruction_input_output, f)
+    elif args.datasets == ['none']:
+
+        transform = transforms.Compose([
+            transforms.Resize((256, 256)),
+            transforms.ToTensor(),
+            # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]), #mageNet normalization
+            transforms.ToPILImage()
+        ])
+
+        blip = get_blip_model(base_model=args.blip_type_model, blip_model=args.blip_LLM , cache_dir=args.cache_dir, load_bit=args.blip_load_bit)
+
+
+        ## ------------ Generate Visual Instruction Dataset -----------------
+        # images_names=[]
+
+        i = 0
+        instruction_input_output = []
+        for image_path in os.listdir(args.data_dir):
+            if not image_path.endswith('.png') and not image_path.endswith('.jpg'):
+                continue
+            i += 1
+
+            image = Image.open(os.path.join(args.data_dir, image_path))
+            image = transform(image)
+
+            ## Generate Visual Instruction Dataset
+            visual_instruction_data= generate(blip, image, args.gpt_model, 
+                                            n_rounds=args.n_rounds,
+                                            n_blip2_context=args.n_blip2_context,
+                                            print_mode=args.chat_mode, 
+                                            BLIP_max_length_token_output=args.blip2_max_length_token_gen, 
+                                            BLIP_llm_decoding_strategy=args.blip2_llm_decoding_strategy
+                                            )
+            
+            image_input_output={'image_name': image_path, 'visual_instruction_data': visual_instruction_data}
+            instruction_input_output.append(image_input_output)
+            
+            if i==5: 
+                pass
+                # break
+        
+        save_name= os.path.join(args.save_path, 
+                                f'test_{args.blip_type_model}_{args.blip_LLM}_{args.gpt_model}_kaohsiung_demo.json')
+        with open(save_name, 'w') as f:
+            json.dump(instruction_input_output, f)
+
     else:
         raise NotImplementedError('Dataset {} is currently not supported.'.format(args.datasets))
       
@@ -398,7 +447,7 @@ if __name__ == '__main__':
         parser = argparse.ArgumentParser(description='Generating captions in test datasets.')
         parser.add_argument('--data_dir', type=str, default="/data1/dataset/Cityscapes/", 
                             help='root path to the datasets')
-        parser.add_argument('--datasets', nargs='+', choices=['cityscape', 'kitty', 'waymo', 'others'], default='cityscape',
+        parser.add_argument('--datasets', nargs='+', choices=['cityscape', 'kitty', 'waymo', 'others', 'none'], default='cityscape',
                         help='Names of the datasets to use in the experiment.  Default is Cityscape.')
         
         parser.add_argument('--save_path', type=str, default='./cityscape_test_imgs/', 

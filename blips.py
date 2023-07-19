@@ -140,14 +140,19 @@ class Viusal_Understanding():
                                       do_sample=True, 
                                       max_length=max_length, 
                                       temperature=1, 
-                                      top_p=0.95, 
-                                      top_k=0, 
+                                      top_p=0.9, 
+                                      top_k=30, 
                                       repetition_penalty=1.5,
                                       length_penalty=1.0,
                                       min_length=min_length,)
         
         elif llm_decoding_strategy =="contrastive_search": 
-            out = self.model.generate(**inputs, max_length=max_length, penalty_alpha=0.6, top_k=6, repetition_penalty=1.5,)
+            out = self.model.generate(**inputs, 
+                                      max_length=max_length, 
+                                      penalty_alpha=0.6, 
+                                      top_k=6, 
+                                      repetition_penalty=1.5,
+                                      min_length=min_length,)
         out.to(self.device)
         answer = self.processor.decode(out[0], skip_special_tokens=True).strip()
         return answer
@@ -172,7 +177,8 @@ if __name__ == '__main__':
     # image_path="/media/rick/f7a9be3d-25cd-45d6-b503-7cb8bd32dbd5/cityscape_synthetic/leftImg8bit/train/bochum/bochum_000000_000600_leftImg8bit.png"
     # image_path = "/data/kinan/driving_assistant/Driving_Assistant/cityscape_test_imgs/test_image_1.png"
     # image_path = "/data/kinan/driving_assistant/Driving_Assistant/other_test_images/4cam_tests"
-    image_path = "/data/kinan/driving_assistant/Driving_Assistant/other_test_images/4cam_tests/LINE_ALBUM_AttractionPlaceTesting_230707_15.jpg"
+    # image_path = "/data/kinan/driving_assistant/Driving_Assistant/other_test_images/4cam_tests/LINE_ALBUM_AttractionPlaceTesting_230707_15.jpg"
+    image_path = "/data/kinan/driving_assistant/Driving_Assistant/other_test_images/kaohsiung_demo/KS000455.jpg"
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     base_model = "instructblip" # ['instructblip' , 'blip2' ]
@@ -181,17 +187,17 @@ if __name__ == '__main__':
     if not os.path.exists(cache_dir):
         os.makedirs(cache_dir)
     load_bit=4
-    # instruction_input = "This is a picture from the front-view camera of a car. \
-    # You are a helpful driving assistant. Please give the driver of the car a \
-    # useful suggestion or warning:"#"Describe this image in detail: " # "Describe this image in detail", "A photo of"
+    instruction_input = "This is a picture from the front-view camera of a car. \
+    You are a helpful driving assistant. Please give the driver of the car a \
+    useful suggestion or warning:"#"Describe this image in detail: " # "Describe this image in detail", "A photo of"
 
-    driver_question = 'How can I get to my destination faster?'
-    direction = 'left'
+    # driver_question = 'How can I get to my destination faster?'
+    # direction = 'left'
 
-    instruction_input = "This is a picture from the " + direction + " side camera of a car. \
-        You are a helpful driving assistant. \
-        The driver has asked you the following question: '" + driver_question + "'\
-        Please give the driver of the car a helpful, detailed answer: "
+    # instruction_input = "This is a picture from the " + direction + " side camera of a car. \
+    #     You are a helpful driving assistant. \
+    #     The driver has asked you the following question: '" + driver_question + "'\
+    #     Please give the driver of the car a helpful, detailed answer: "
     
     print("Model reponse:\n")
     main(device, image_path, base_model=base_model,blip_model=blip_model, load_bit=load_bit, cache_dir=cache_dir, instruction_input=instruction_input )
