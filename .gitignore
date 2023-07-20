@@ -21,3 +21,4 @@ rad.json
 #Test results file
 TestResults.xml
 Test_images/nuscenes/
+Test_images/
