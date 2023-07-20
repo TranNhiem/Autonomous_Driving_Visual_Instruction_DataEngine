@@ -1,3 +1,4 @@
 driving_assist --> Using for BLIP & InstructBLIP model 
 driving_assist_v2 --> Using for Dense Caption GRIT Model 
 Driving_assist_v3 --> Using for Otter Model
+Docker image 3069 port --> Using for Kosmo-2 model
