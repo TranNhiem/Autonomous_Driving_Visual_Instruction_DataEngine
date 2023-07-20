@@ -12,6 +12,7 @@ from GRiT.dense_caption_raw import image_caption_api
 import sys 
 from detectron2.utils.logger import setup_logger
 sys.path.append( '/data/rick/autonomous_instruction_dataengine/Autonomous_Driving_Visual_Instruction_DataEngine/vision_language_model/GRiT/')
+
 class DenseCaptioning():
     def __init__(self, device):
         self.device = device
@@ -38,9 +39,9 @@ class DenseCaptioning():
 if __name__ == '__main__':
 
     image_path= "/data1/dataset/Cityscapes/leftImg8bit/train/jena/jena_000078_000019_leftImg8bit.png"
-    save_img_path = "/data/rick/autonomous_instruction_dataengine/Autonomous_Driving_Visual_Instruction_DataEngine/cityscape_test_imgs/grit_model_test/"
+    save_img_path = "/data/rick/autonomous_instruction_dataengine/Autonomous_Driving_Visual_Instruction_DataEngine/Test_images/cityscape_image_tests/grit_model_test"
     device = "cuda:1"
     img_name="Dense_caption_T_06_jena_000078_000019_leftImg8bit.png"
-    dense_caption = DenseCaptioning( device)
+    dense_caption = DenseCaptioning(device)
     dense_caption, _, image_shape= dense_caption.image_dense_caption(image_path, save_img_path=save_img_path, image_name=img_name)
     print(dense_caption)

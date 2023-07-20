@@ -108,14 +108,14 @@ def main(image_path, GPT_model, device, save_path):
 
     ## Current Testing Recommend messages_2 and Messages_4 for Information With Coordinate and Without Coordinate Visual abstract information
     ## If using Coordinate information, try to make sure this Image Shape will be the Final Input Image Shape for the Driving Model
-    visual_description=call_gpt(chatgpt_messages=messages_2,  max_tokens=512,model=GPT_model)
+    visual_description=call_gpt(chatgpt_messages=messages_4,  max_tokens=512,model=GPT_model)
     
     return visual_description
 
 if __name__ == '__main__':
 
     image_path= "/data1/dataset/Cityscapes/leftImg8bit/train/jena/jena_000078_000019_leftImg8bit.png"
-    save_path = "/data/rick/autonomous_instruction_dataengine/Autonomous_Driving_Visual_Instruction_DataEngine/cityscape_test_imgs/grit_model_test/"
+    save_path = "/data/rick/autonomous_instruction_dataengine/Autonomous_Driving_Visual_Instruction_DataEngine/Test_images/cityscape_image_tests/grit_model_test"
     GPT_model = 'gpt-4'
     img_name="Dense_caption_T_06_jena_000078_000019_leftImg8bit.png"
     #
