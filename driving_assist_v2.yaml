@@ -1,0 +1,5 @@
+name: driving_assist_v2
+channels:
+  - conda-forge
+  - defaults
+prefix: /data/rick/yes/envs/driving_assist_v2

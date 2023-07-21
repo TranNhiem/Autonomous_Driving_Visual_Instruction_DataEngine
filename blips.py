@@ -198,10 +198,26 @@ if __name__ == '__main__':
     #     You are a helpful driving assistant. \
     #     The driver has asked you the following question: '" + driver_question + "'\
     #     Please give the driver of the car a helpful, detailed answer: "
-    
+
     print("Model reponse:\n")
     main(device, image_path, base_model=base_model,blip_model=blip_model, load_bit=load_bit, cache_dir=cache_dir, instruction_input=instruction_input )
     print()
     # for i in ["LINE_ALBUM_230705_0.jpg", 'LINE_ALBUM_230705_1.jpg', 'LINE_ALBUM_230705_2.jpg', 'LINE_ALBUM_230705_3.jpg']:
     #     main(device, image_path+i, base_model=base_model,blip_model=blip_model, load_bit=load_bit, cache_dir=cache_dir, instruction_input=instruction_input )
     
+    ## ForLoop Testing 
+    while True:
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        base_model = "instructblip" # ['instructblip' , 'blip2' ]
+        blip_model = "vicuna-7B" # ["vicuna-7B", "OPT2.7B COCO", "OPT6.7B COCO",] 
+        cache_dir = '/data/rick/pretrained_weights/Instruct_blip/'
+        if not os.path.exists(cache_dir):
+            os.makedirs(cache_dir)
+        load_bit=4
+        image_path="/data/rick/autonomous_instruction_dataengine/Autonomous_Driving_Visual_Instruction_DataEngine/Test_images/cityscape_image_tests/gtfine_test_image_8.png"
+        instruction_input =  input("Enter the prompts (or type 'quit' to exit): ")#"what is the main object inside the image?"
+        
+        print(f"\nPrompt: {instruction_input}")
+        print("BLIP or InstructBLIP Response\n")
+        main(device, image_path, base_model=base_model,blip_model=blip_model, load_bit=load_bit, cache_dir=cache_dir, instruction_input=instruction_input )
+        print()
