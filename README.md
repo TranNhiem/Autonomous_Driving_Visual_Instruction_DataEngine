@@ -80,9 +80,3 @@
 1. Continue via to Enrich Visual Information [Open-Flamingo](https://github.com/mlfoundations/open_flamingo), [Prismer](https://shikun.io/projects/prismer), [GRIT](https://github.com/JialianW/GRiT), [KOSMOS-2](https://github.com/microsoft/unilm/tree/master/kosmos-2)
 
 2. Construct others Type of GPT Instruction Prompt 
-[Intelligent Transportation] (https://arxiv.org/abs/2303.05382)
-+ How to guide GPT model to create a good Question input 
-    <div align="center">
-        <img width="auto" height="200px" src="./cityscape_test_imgs/improve_better_prompt.png"/>
-    </div>
-
