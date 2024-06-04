@@ -3,7 +3,7 @@
 </h1>
 
 <div align="center">
-     <img width="auto" height="300px" src="./carbin_gpt_idea.png"/>
+     <img width="auto" height="300px" src="./carbin_gpt_ideas.png"/>
 </div>
 
 # Project Features
